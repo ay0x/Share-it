@@ -22,9 +22,42 @@
               </label>
           </div>
           <div class="col"></div>
-          <p class="text-center mt-2 mb-0 progress-text">Upload limit is 100mb. Sign up or log in for unlimited upload</p>
+          <p class="text-center mt-2 mb-0 progress-text fs-6">Upload limit is 300mb. Sign up or log in for unlimited upload</p>
       </div>
   </div>
- 
+  <!-- SELECTED FILES -->
+  <div class="container-fluid" id="fileTable">
+      <div class="row d-flex justify-content-center">
+          <div class="col-6">
+              <div class="row mt-3">
+                  <p class="fs-6 fw-bold">Selected file(s):</p>
+              </div>
+              <div class="row">
+                  <div class="col table-responsive">
+                      <table class="table table-hover table-sm">
+                          <thead>
+                              <tr class="table-light">
+                                  <th class="col-7">File name</th>
+                                  <th class="col-3">Size</th>
+                                  <th class="col-2">Action</th>
+                              </tr>
+                          </thead>
+                          <tbody class="table-light">
+                              <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                              </tr>
+                          </tbody>
+                      </table>
+                      <i class="bi bi-file-earmark-plus" style="font-size: 1.3rem; color: rgb(235, 95, 95); cursor: pointer;" onclick="document.getElementById('customFileInput').click()"> Add more file</i>
+                  </div>
+              </div>
+              <div class="row d-flex justify-content-end">
+                  <button class="custom-upload-button mt-2 mx-3">Upload</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </main>
 {% endblock %}

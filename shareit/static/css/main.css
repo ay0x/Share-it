@@ -1,3 +1,4 @@
+/* Development CSS */
 @font-face {
   font-family: myFont;
   src: url("../font/AvenirNextLTPro-Bold.otf");
@@ -97,7 +98,7 @@ body {
   width: 800px;
 }
 #fileTable {
-  display: table;
+  display: none;
 }
 .footer .container .bi {
   font-size: 30px;
@@ -134,7 +135,7 @@ footer {
   padding: 6px 25px;
   cursor: pointer;
   border-radius: 5px;
-  flex-shrink: 0; /* Ensure the button doesn't shrink */
+  flex-shrink: 0;
 }
 
 .copy-button:hover {
