@@ -1,5 +1,30 @@
 {% extends "base.html" %}
 
 {% block content%}
-<h1>Home Page</h1>
+<main class="mt-5 pt-5">
+  <!-- The first DIV (Header information starts here) -->
+  <div class="container-fluid" id="headerInfo">
+      <div class="row">
+          <div class="col">
+              <p class="text-center fs-2 text-dark mt-3 mb-0">Share large files securely & privately!</p>
+          </div>
+      </div>
+  </div>
+  <!-- DROPBOX DIV -->
+  <div class="container-fluid mt-5 mb-5" id="dropbox">
+      <div class="row d-flex justify-content-center">
+          <div class="col"></div>
+          <div class="col-7">
+              <input type="file" class="custom-file-input" id="customFileInput" multiple>
+              <label class="custom-file-label" for="customFileInput">
+                  <span class="fs-5 custom-file-text">Drag files here or click browse to upload</span>
+                  <button class="btn fs-5 custom-file-button" onclick="document.getElementById('customFileInput').click()">Browse</button>
+              </label>
+          </div>
+          <div class="col"></div>
+          <p class="text-center mt-2 mb-0 progress-text">Upload limit is 100mb. Sign up or log in for unlimited upload</p>
+      </div>
+  </div>
+ 
+</main>
 {% endblock %}
