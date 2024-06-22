@@ -1,4 +1,4 @@
-//Development JS
+// Development JS
 const dropbox = document.getElementById('dropbox');
 
 function preventDefaults (e) {
@@ -22,7 +22,7 @@ function handleDrop (e) {
 }
 
 function handleFiles (files) {
-  const header = document.getElementById('headerInfo')
+  const header = document.getElementById('headerInfo');
   const table = document.getElementById('fileTable');
   const fileUpload = document.getElementById('dropbox');
   const tableBody = document.querySelector('.table tbody');
@@ -30,7 +30,7 @@ function handleFiles (files) {
   tableBody.innerHTML = ''; // Clear the existing rows
 
   if (files.length > 0) {
-    header.style.display = 'none'
+    header.style.display = 'none';
     fileUpload.style.display = 'none';
     table.style.display = 'table';
   } else {
@@ -46,9 +46,14 @@ function handleFiles (files) {
     row.appendChild(fileNameCell);
 
     const fileSizeCell = document.createElement('td');
-    fileSizeCell.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB'; // Convert size to MB
+    if (file.size < 1024000) {
+      fileSizeCell.textContent = (file.size / 1024).toFixed(2) + ' KB';
+    } else if (file.size < 1024000000) {
+      fileSizeCell.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+    } else {
+      fileSizeCell.textContent = (file.size / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+    }
     row.appendChild(fileSizeCell);
-
     const actionCell = document.createElement('td');
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
@@ -58,7 +63,7 @@ function handleFiles (files) {
       if (tableBody.children.length === 0) {
         table.style.display = 'none';
         fileUpload.style.display = 'table';
-        header.style.display = 'table'
+        header.style.display = 'table';
       }
     };
     actionCell.appendChild(deleteButton);

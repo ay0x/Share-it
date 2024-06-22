@@ -18,7 +18,7 @@ import * as Popper from '@popperjs/core';
 
 const elementMap = new Map();
 const Data = {
-  set(element, key, instance) {
+  set (element, key, instance) {
     if (!elementMap.has(element)) {
       elementMap.set(element, new Map());
     }
@@ -33,13 +33,13 @@ const Data = {
     }
     instanceMap.set(key, instance);
   },
-  get(element, key) {
+  get (element, key) {
     if (elementMap.has(element)) {
       return elementMap.get(element).get(key) || null;
     }
     return null;
   },
-  remove(element, key) {
+  remove (element, key) {
     if (!elementMap.has(element)) {
       return;
     }
@@ -306,7 +306,6 @@ const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -326,17 +325,17 @@ const nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'cont
  * Private methods
  */
 
-function makeEventUid(element, uid) {
+function makeEventUid (element, uid) {
   return uid && `${uid}::${uidEvent++}` || element.uidEvent || uidEvent++;
 }
-function getElementEvents(element) {
+function getElementEvents (element) {
   const uid = makeEventUid(element);
   element.uidEvent = uid;
   eventRegistry[uid] = eventRegistry[uid] || {};
   return eventRegistry[uid];
 }
-function bootstrapHandler(element, fn) {
-  return function handler(event) {
+function bootstrapHandler (element, fn) {
+  return function handler (event) {
     hydrateObj(event, {
       delegateTarget: element
     });
@@ -346,8 +345,8 @@ function bootstrapHandler(element, fn) {
     return fn.apply(element, [event]);
   };
 }
-function bootstrapDelegationHandler(element, selector, fn) {
-  return function handler(event) {
+function bootstrapDelegationHandler (element, selector, fn) {
+  return function handler (event) {
     const domElements = element.querySelectorAll(selector);
     for (let {
       target
@@ -367,10 +366,10 @@ function bootstrapDelegationHandler(element, selector, fn) {
     }
   };
 }
-function findHandler(events, callable, delegationSelector = null) {
+function findHandler (events, callable, delegationSelector = null) {
   return Object.values(events).find(event => event.callable === callable && event.delegationSelector === delegationSelector);
 }
-function normalizeParameters(originalTypeEvent, handler, delegationFunction) {
+function normalizeParameters (originalTypeEvent, handler, delegationFunction) {
   const isDelegated = typeof handler === 'string';
   // TODO: tooltip passes `false` instead of selector, so we need to check
   const callable = isDelegated ? delegationFunction : handler || delegationFunction;
@@ -380,7 +379,7 @@ function normalizeParameters(originalTypeEvent, handler, delegationFunction) {
   }
   return [isDelegated, callable, typeEvent];
 }
-function addHandler(element, originalTypeEvent, handler, delegationFunction, oneOff) {
+function addHandler (element, originalTypeEvent, handler, delegationFunction, oneOff) {
   if (typeof originalTypeEvent !== 'string' || !element) {
     return;
   }
@@ -414,7 +413,7 @@ function addHandler(element, originalTypeEvent, handler, delegationFunction, one
   handlers[uid] = fn;
   element.addEventListener(typeEvent, fn, isDelegated);
 }
-function removeHandler(element, events, typeEvent, handler, delegationSelector) {
+function removeHandler (element, events, typeEvent, handler, delegationSelector) {
   const fn = findHandler(events[typeEvent], handler, delegationSelector);
   if (!fn) {
     return;
@@ -422,7 +421,7 @@ function removeHandler(element, events, typeEvent, handler, delegationSelector) 
   element.removeEventListener(typeEvent, fn, Boolean(delegationSelector));
   delete events[typeEvent][fn.uidEvent];
 }
-function removeNamespacedHandlers(element, events, typeEvent, namespace) {
+function removeNamespacedHandlers (element, events, typeEvent, namespace) {
   const storeElementEvent = events[typeEvent] || {};
   for (const [handlerKey, event] of Object.entries(storeElementEvent)) {
     if (handlerKey.includes(namespace)) {
@@ -430,19 +429,19 @@ function removeNamespacedHandlers(element, events, typeEvent, namespace) {
     }
   }
 }
-function getTypeEvent(event) {
+function getTypeEvent (event) {
   // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
   event = event.replace(stripNameRegex, '');
   return customEvents[event] || event;
 }
 const EventHandler = {
-  on(element, event, handler, delegationFunction) {
+  on (element, event, handler, delegationFunction) {
     addHandler(element, event, handler, delegationFunction, false);
   },
-  one(element, event, handler, delegationFunction) {
+  one (element, event, handler, delegationFunction) {
     addHandler(element, event, handler, delegationFunction, true);
   },
-  off(element, originalTypeEvent, handler, delegationFunction) {
+  off (element, originalTypeEvent, handler, delegationFunction) {
     if (typeof originalTypeEvent !== 'string' || !element) {
       return;
     }
@@ -471,7 +470,7 @@ const EventHandler = {
       }
     }
   },
-  trigger(element, event, args) {
+  trigger (element, event, args) {
     if (typeof event !== 'string' || !element) {
       return null;
     }
@@ -505,14 +504,14 @@ const EventHandler = {
     return evt;
   }
 };
-function hydrateObj(obj, meta = {}) {
+function hydrateObj (obj, meta = {}) {
   for (const [key, value] of Object.entries(meta)) {
     try {
       obj[key] = value;
     } catch (_unused) {
       Object.defineProperty(obj, key, {
         configurable: true,
-        get() {
+        get () {
           return value;
         }
       });
@@ -528,7 +527,7 @@ function hydrateObj(obj, meta = {}) {
  * --------------------------------------------------------------------------
  */
 
-function normalizeData(value) {
+function normalizeData (value) {
   if (value === 'true') {
     return true;
   }
@@ -550,17 +549,17 @@ function normalizeData(value) {
     return value;
   }
 }
-function normalizeDataKey(key) {
+function normalizeDataKey (key) {
   return key.replace(/[A-Z]/g, chr => `-${chr.toLowerCase()}`);
 }
 const Manipulator = {
-  setDataAttribute(element, key, value) {
+  setDataAttribute (element, key, value) {
     element.setAttribute(`data-bs-${normalizeDataKey(key)}`, value);
   },
-  removeDataAttribute(element, key) {
+  removeDataAttribute (element, key) {
     element.removeAttribute(`data-bs-${normalizeDataKey(key)}`);
   },
-  getDataAttributes(element) {
+  getDataAttributes (element) {
     if (!element) {
       return {};
     }
@@ -573,7 +572,7 @@ const Manipulator = {
     }
     return attributes;
   },
-  getDataAttribute(element, key) {
+  getDataAttribute (element, key) {
     return normalizeData(element.getAttribute(`data-bs-${normalizeDataKey(key)}`));
   }
 };
@@ -585,32 +584,36 @@ const Manipulator = {
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Class definition
  */
 
 class Config {
   // Getters
-  static get Default() {
+  static get Default () {
     return {};
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return {};
   }
-  static get NAME() {
+
+  static get NAME () {
     throw new Error('You have to implement the static method "NAME", for each component!');
   }
-  _getConfig(config) {
+
+  _getConfig (config) {
     config = this._mergeConfigObj(config);
     config = this._configAfterMerge(config);
     this._typeCheckConfig(config);
     return config;
   }
-  _configAfterMerge(config) {
+
+  _configAfterMerge (config) {
     return config;
   }
-  _mergeConfigObj(config, element) {
+
+  _mergeConfigObj (config, element) {
     const jsonConfig = isElement(element) ? Manipulator.getDataAttribute(element, 'config') : {}; // try to parse
 
     return {
@@ -620,7 +623,8 @@ class Config {
       ...(typeof config === 'object' ? config : {})
     };
   }
-  _typeCheckConfig(config, configTypes = this.constructor.DefaultType) {
+
+  _typeCheckConfig (config, configTypes = this.constructor.DefaultType) {
     for (const [property, expectedTypes] of Object.entries(configTypes)) {
       const value = config[property];
       const valueType = isElement(value) ? 'element' : toType(value);
@@ -638,7 +642,6 @@ class Config {
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -650,7 +653,7 @@ const VERSION = '5.3.3';
  */
 
 class BaseComponent extends Config {
-  constructor(element, config) {
+  constructor (element, config) {
     super();
     element = getElement(element);
     if (!element) {
@@ -662,17 +665,19 @@ class BaseComponent extends Config {
   }
 
   // Public
-  dispose() {
+  dispose () {
     Data.remove(this._element, this.constructor.DATA_KEY);
     EventHandler.off(this._element, this.constructor.EVENT_KEY);
     for (const propertyName of Object.getOwnPropertyNames(this)) {
       this[propertyName] = null;
     }
   }
-  _queueCallback(callback, element, isAnimated = true) {
+
+  _queueCallback (callback, element, isAnimated = true) {
     executeAfterTransition(callback, element, isAnimated);
   }
-  _getConfig(config) {
+
+  _getConfig (config) {
     config = this._mergeConfigObj(config, this._element);
     config = this._configAfterMerge(config);
     this._typeCheckConfig(config);
@@ -680,22 +685,27 @@ class BaseComponent extends Config {
   }
 
   // Static
-  static getInstance(element) {
+  static getInstance (element) {
     return Data.get(getElement(element), this.DATA_KEY);
   }
-  static getOrCreateInstance(element, config = {}) {
+
+  static getOrCreateInstance (element, config = {}) {
     return this.getInstance(element) || new this(element, typeof config === 'object' ? config : null);
   }
-  static get VERSION() {
+
+  static get VERSION () {
     return VERSION;
   }
-  static get DATA_KEY() {
+
+  static get DATA_KEY () {
     return `bs.${this.NAME}`;
   }
-  static get EVENT_KEY() {
+
+  static get EVENT_KEY () {
     return `.${this.DATA_KEY}`;
   }
-  static eventName(name) {
+
+  static eventName (name) {
     return `${name}${this.EVENT_KEY}`;
   }
 }
@@ -729,16 +739,16 @@ const getSelector = element => {
   return selector ? selector.split(',').map(sel => parseSelector(sel)).join(',') : null;
 };
 const SelectorEngine = {
-  find(selector, element = document.documentElement) {
+  find (selector, element = document.documentElement) {
     return [].concat(...Element.prototype.querySelectorAll.call(element, selector));
   },
-  findOne(selector, element = document.documentElement) {
+  findOne (selector, element = document.documentElement) {
     return Element.prototype.querySelector.call(element, selector);
   },
-  children(element, selector) {
+  children (element, selector) {
     return [].concat(...element.children).filter(child => child.matches(selector));
   },
-  parents(element, selector) {
+  parents (element, selector) {
     const parents = [];
     let ancestor = element.parentNode.closest(selector);
     while (ancestor) {
@@ -747,7 +757,7 @@ const SelectorEngine = {
     }
     return parents;
   },
-  prev(element, selector) {
+  prev (element, selector) {
     let previous = element.previousElementSibling;
     while (previous) {
       if (previous.matches(selector)) {
@@ -758,7 +768,7 @@ const SelectorEngine = {
     return [];
   },
   // TODO: this is now unused; remove later along with prev()
-  next(element, selector) {
+  next (element, selector) {
     let next = element.nextElementSibling;
     while (next) {
       if (next.matches(selector)) {
@@ -768,22 +778,22 @@ const SelectorEngine = {
     }
     return [];
   },
-  focusableChildren(element) {
+  focusableChildren (element) {
     const focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map(selector => `${selector}:not([tabindex^="-"])`).join(',');
     return this.find(focusables, element).filter(el => !isDisabled(el) && isVisible(el));
   },
-  getSelectorFromElement(element) {
+  getSelectorFromElement (element) {
     const selector = getSelector(element);
     if (selector) {
       return SelectorEngine.findOne(selector) ? selector : null;
     }
     return null;
   },
-  getElementFromSelector(element) {
+  getElementFromSelector (element) {
     const selector = getSelector(element);
     return selector ? SelectorEngine.findOne(selector) : null;
   },
-  getMultipleElementsFromSelector(element) {
+  getMultipleElementsFromSelector (element) {
     const selector = getSelector(element);
     return selector ? SelectorEngine.find(selector) : [];
   }
@@ -821,7 +831,6 @@ const enableDismissTrigger = (component, method = 'hide') => {
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -840,12 +849,12 @@ const CLASS_NAME_SHOW$8 = 'show';
 
 class Alert extends BaseComponent {
   // Getters
-  static get NAME() {
+  static get NAME () {
     return NAME$f;
   }
 
   // Public
-  close() {
+  close () {
     const closeEvent = EventHandler.trigger(this._element, EVENT_CLOSE);
     if (closeEvent.defaultPrevented) {
       return;
@@ -856,14 +865,14 @@ class Alert extends BaseComponent {
   }
 
   // Private
-  _destroyElement() {
+  _destroyElement () {
     this._element.remove();
     EventHandler.trigger(this._element, EVENT_CLOSED);
     this.dispose();
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Alert.getOrCreateInstance(this);
       if (typeof config !== 'string') {
@@ -896,7 +905,6 @@ defineJQueryPlugin(Alert);
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -915,18 +923,18 @@ const EVENT_CLICK_DATA_API$6 = `click${EVENT_KEY$a}${DATA_API_KEY$6}`;
 
 class Button extends BaseComponent {
   // Getters
-  static get NAME() {
+  static get NAME () {
     return NAME$e;
   }
 
   // Public
-  toggle() {
+  toggle () {
     // Toggle class and sync the `aria-pressed` attribute with the return value of the `.toggle()` method
     this._element.setAttribute('aria-pressed', this._element.classList.toggle(CLASS_NAME_ACTIVE$3));
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Button.getOrCreateInstance(this);
       if (config === 'toggle') {
@@ -960,7 +968,6 @@ defineJQueryPlugin(Button);
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -992,7 +999,7 @@ const DefaultType$c = {
  */
 
 class Swipe extends Config {
-  constructor(element, config) {
+  constructor (element, config) {
     super();
     this._element = element;
     if (!element || !Swipe.isSupported()) {
@@ -1005,23 +1012,25 @@ class Swipe extends Config {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$c;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$c;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$d;
   }
 
   // Public
-  dispose() {
+  dispose () {
     EventHandler.off(this._element, EVENT_KEY$9);
   }
 
   // Private
-  _start(event) {
+  _start (event) {
     if (!this._supportPointerEvents) {
       this._deltaX = event.touches[0].clientX;
       return;
@@ -1030,17 +1039,20 @@ class Swipe extends Config {
       this._deltaX = event.clientX;
     }
   }
-  _end(event) {
+
+  _end (event) {
     if (this._eventIsPointerPenTouch(event)) {
       this._deltaX = event.clientX - this._deltaX;
     }
     this._handleSwipe();
     execute(this._config.endCallback);
   }
-  _move(event) {
+
+  _move (event) {
     this._deltaX = event.touches && event.touches.length > 1 ? 0 : event.touches[0].clientX - this._deltaX;
   }
-  _handleSwipe() {
+
+  _handleSwipe () {
     const absDeltaX = Math.abs(this._deltaX);
     if (absDeltaX <= SWIPE_THRESHOLD) {
       return;
@@ -1052,7 +1064,8 @@ class Swipe extends Config {
     }
     execute(direction > 0 ? this._config.rightCallback : this._config.leftCallback);
   }
-  _initEvents() {
+
+  _initEvents () {
     if (this._supportPointerEvents) {
       EventHandler.on(this._element, EVENT_POINTERDOWN, event => this._start(event));
       EventHandler.on(this._element, EVENT_POINTERUP, event => this._end(event));
@@ -1063,12 +1076,13 @@ class Swipe extends Config {
       EventHandler.on(this._element, EVENT_TOUCHEND, event => this._end(event));
     }
   }
-  _eventIsPointerPenTouch(event) {
+
+  _eventIsPointerPenTouch (event) {
     return this._supportPointerEvents && (event.pointerType === POINTER_TYPE_PEN || event.pointerType === POINTER_TYPE_TOUCH);
   }
 
   // Static
-  static isSupported() {
+  static isSupported () {
     return 'ontouchstart' in document.documentElement || navigator.maxTouchPoints > 0;
   }
 }
@@ -1079,7 +1093,6 @@ class Swipe extends Config {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -1146,7 +1159,7 @@ const DefaultType$b = {
  */
 
 class Carousel extends BaseComponent {
-  constructor(element, config) {
+  constructor (element, config) {
     super(element, config);
     this._interval = null;
     this._activeElement = null;
@@ -1161,21 +1174,24 @@ class Carousel extends BaseComponent {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$b;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$b;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$c;
   }
 
   // Public
-  next() {
+  next () {
     this._slide(ORDER_NEXT);
   }
-  nextWhenVisible() {
+
+  nextWhenVisible () {
     // FIXME TODO use `document.visibilityState`
     // Don't call next when the page isn't visible
     // or the carousel or its parent isn't visible
@@ -1183,21 +1199,25 @@ class Carousel extends BaseComponent {
       this.next();
     }
   }
-  prev() {
+
+  prev () {
     this._slide(ORDER_PREV);
   }
-  pause() {
+
+  pause () {
     if (this._isSliding) {
       triggerTransitionEnd(this._element);
     }
     this._clearInterval();
   }
-  cycle() {
+
+  cycle () {
     this._clearInterval();
     this._updateInterval();
     this._interval = setInterval(() => this.nextWhenVisible(), this._config.interval);
   }
-  _maybeEnableCycle() {
+
+  _maybeEnableCycle () {
     if (!this._config.ride) {
       return;
     }
@@ -1207,7 +1227,8 @@ class Carousel extends BaseComponent {
     }
     this.cycle();
   }
-  to(index) {
+
+  to (index) {
     const items = this._getItems();
     if (index > items.length - 1 || index < 0) {
       return;
@@ -1223,7 +1244,8 @@ class Carousel extends BaseComponent {
     const order = index > activeIndex ? ORDER_NEXT : ORDER_PREV;
     this._slide(order, items[index]);
   }
-  dispose() {
+
+  dispose () {
     if (this._swipeHelper) {
       this._swipeHelper.dispose();
     }
@@ -1231,11 +1253,12 @@ class Carousel extends BaseComponent {
   }
 
   // Private
-  _configAfterMerge(config) {
+  _configAfterMerge (config) {
     config.defaultInterval = config.interval;
     return config;
   }
-  _addEventListeners() {
+
+  _addEventListeners () {
     if (this._config.keyboard) {
       EventHandler.on(this._element, EVENT_KEYDOWN$1, event => this._keydown(event));
     }
@@ -1247,7 +1270,8 @@ class Carousel extends BaseComponent {
       this._addTouchEventListeners();
     }
   }
-  _addTouchEventListeners() {
+
+  _addTouchEventListeners () {
     for (const img of SelectorEngine.find(SELECTOR_ITEM_IMG, this._element)) {
       EventHandler.on(img, EVENT_DRAG_START, event => event.preventDefault());
     }
@@ -1277,7 +1301,8 @@ class Carousel extends BaseComponent {
     };
     this._swipeHelper = new Swipe(this._element, swipeConfig);
   }
-  _keydown(event) {
+
+  _keydown (event) {
     if (/input|textarea/i.test(event.target.tagName)) {
       return;
     }
@@ -1287,10 +1312,12 @@ class Carousel extends BaseComponent {
       this._slide(this._directionToOrder(direction));
     }
   }
-  _getItemIndex(element) {
+
+  _getItemIndex (element) {
     return this._getItems().indexOf(element);
   }
-  _setActiveIndicatorElement(index) {
+
+  _setActiveIndicatorElement (index) {
     if (!this._indicatorsElement) {
       return;
     }
@@ -1303,7 +1330,8 @@ class Carousel extends BaseComponent {
       newActiveIndicator.setAttribute('aria-current', 'true');
     }
   }
-  _updateInterval() {
+
+  _updateInterval () {
     const element = this._activeElement || this._getActive();
     if (!element) {
       return;
@@ -1311,7 +1339,8 @@ class Carousel extends BaseComponent {
     const elementInterval = Number.parseInt(element.getAttribute('data-bs-interval'), 10);
     this._config.interval = elementInterval || this._config.defaultInterval;
   }
-  _slide(order, element = null) {
+
+  _slide (order, element = null) {
     if (this._isSliding) {
       return;
     }
@@ -1362,28 +1391,34 @@ class Carousel extends BaseComponent {
       this.cycle();
     }
   }
-  _isAnimated() {
+
+  _isAnimated () {
     return this._element.classList.contains(CLASS_NAME_SLIDE);
   }
-  _getActive() {
+
+  _getActive () {
     return SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element);
   }
-  _getItems() {
+
+  _getItems () {
     return SelectorEngine.find(SELECTOR_ITEM, this._element);
   }
-  _clearInterval() {
+
+  _clearInterval () {
     if (this._interval) {
       clearInterval(this._interval);
       this._interval = null;
     }
   }
-  _directionToOrder(direction) {
+
+  _directionToOrder (direction) {
     if (isRTL()) {
       return direction === DIRECTION_LEFT ? ORDER_PREV : ORDER_NEXT;
     }
     return direction === DIRECTION_LEFT ? ORDER_NEXT : ORDER_PREV;
   }
-  _orderToDirection(order) {
+
+  _orderToDirection (order) {
     if (isRTL()) {
       return order === ORDER_PREV ? DIRECTION_LEFT : DIRECTION_RIGHT;
     }
@@ -1391,7 +1426,7 @@ class Carousel extends BaseComponent {
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Carousel.getOrCreateInstance(this, config);
       if (typeof config === 'number') {
@@ -1453,7 +1488,6 @@ defineJQueryPlugin(Carousel);
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -1491,7 +1525,7 @@ const DefaultType$a = {
  */
 
 class Collapse extends BaseComponent {
-  constructor(element, config) {
+  constructor (element, config) {
     super(element, config);
     this._isTransitioning = false;
     this._triggerArray = [];
@@ -1513,25 +1547,28 @@ class Collapse extends BaseComponent {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$a;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$a;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$b;
   }
 
   // Public
-  toggle() {
+  toggle () {
     if (this._isShown()) {
       this.hide();
     } else {
       this.show();
     }
   }
-  show() {
+
+  show () {
     if (this._isTransitioning || this._isShown()) {
       return;
     }
@@ -1571,7 +1608,8 @@ class Collapse extends BaseComponent {
     this._queueCallback(complete, this._element, true);
     this._element.style[dimension] = `${this._element[scrollSize]}px`;
   }
-  hide() {
+
+  hide () {
     if (this._isTransitioning || !this._isShown()) {
       return;
     }
@@ -1600,20 +1638,23 @@ class Collapse extends BaseComponent {
     this._element.style[dimension] = '';
     this._queueCallback(complete, this._element, true);
   }
-  _isShown(element = this._element) {
+
+  _isShown (element = this._element) {
     return element.classList.contains(CLASS_NAME_SHOW$7);
   }
 
   // Private
-  _configAfterMerge(config) {
+  _configAfterMerge (config) {
     config.toggle = Boolean(config.toggle); // Coerce string values
     config.parent = getElement(config.parent);
     return config;
   }
-  _getDimension() {
+
+  _getDimension () {
     return this._element.classList.contains(CLASS_NAME_HORIZONTAL) ? WIDTH : HEIGHT;
   }
-  _initializeChildren() {
+
+  _initializeChildren () {
     if (!this._config.parent) {
       return;
     }
@@ -1625,12 +1666,14 @@ class Collapse extends BaseComponent {
       }
     }
   }
-  _getFirstLevelChildren(selector) {
+
+  _getFirstLevelChildren (selector) {
     const children = SelectorEngine.find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent);
     // remove children if greater depth
     return SelectorEngine.find(selector, this._config.parent).filter(element => !children.includes(element));
   }
-  _addAriaAndCollapsedClass(triggerArray, isOpen) {
+
+  _addAriaAndCollapsedClass (triggerArray, isOpen) {
     if (!triggerArray.length) {
       return;
     }
@@ -1641,7 +1684,7 @@ class Collapse extends BaseComponent {
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     const _config = {};
     if (typeof config === 'string' && /show|hide/.test(config)) {
       _config.toggle = false;
@@ -1686,7 +1729,6 @@ defineJQueryPlugin(Collapse);
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -1751,7 +1793,7 @@ const DefaultType$9 = {
  */
 
 class Dropdown extends BaseComponent {
-  constructor(element, config) {
+  constructor (element, config) {
     super(element, config);
     this._popper = null;
     this._parent = this._element.parentNode; // dropdown wrapper
@@ -1761,21 +1803,24 @@ class Dropdown extends BaseComponent {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$9;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$9;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$a;
   }
 
   // Public
-  toggle() {
+  toggle () {
     return this._isShown() ? this.hide() : this.show();
   }
-  show() {
+
+  show () {
     if (isDisabled(this._element) || this._isShown()) {
       return;
     }
@@ -1803,7 +1848,8 @@ class Dropdown extends BaseComponent {
     this._element.classList.add(CLASS_NAME_SHOW$6);
     EventHandler.trigger(this._element, EVENT_SHOWN$5, relatedTarget);
   }
-  hide() {
+
+  hide () {
     if (isDisabled(this._element) || !this._isShown()) {
       return;
     }
@@ -1812,13 +1858,15 @@ class Dropdown extends BaseComponent {
     };
     this._completeHide(relatedTarget);
   }
-  dispose() {
+
+  dispose () {
     if (this._popper) {
       this._popper.destroy();
     }
     super.dispose();
   }
-  update() {
+
+  update () {
     this._inNavbar = this._detectNavbar();
     if (this._popper) {
       this._popper.update();
@@ -1826,7 +1874,7 @@ class Dropdown extends BaseComponent {
   }
 
   // Private
-  _completeHide(relatedTarget) {
+  _completeHide (relatedTarget) {
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE$5, relatedTarget);
     if (hideEvent.defaultPrevented) {
       return;
@@ -1848,7 +1896,8 @@ class Dropdown extends BaseComponent {
     Manipulator.removeDataAttribute(this._menu, 'popper');
     EventHandler.trigger(this._element, EVENT_HIDDEN$5, relatedTarget);
   }
-  _getConfig(config) {
+
+  _getConfig (config) {
     config = super._getConfig(config);
     if (typeof config.reference === 'object' && !isElement(config.reference) && typeof config.reference.getBoundingClientRect !== 'function') {
       // Popper virtual elements require a getBoundingClientRect method
@@ -1856,7 +1905,8 @@ class Dropdown extends BaseComponent {
     }
     return config;
   }
-  _createPopper() {
+
+  _createPopper () {
     if (typeof Popper === 'undefined') {
       throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org)');
     }
@@ -1871,10 +1921,12 @@ class Dropdown extends BaseComponent {
     const popperConfig = this._getPopperConfig();
     this._popper = Popper.createPopper(referenceElement, this._menu, popperConfig);
   }
-  _isShown() {
+
+  _isShown () {
     return this._menu.classList.contains(CLASS_NAME_SHOW$6);
   }
-  _getPlacement() {
+
+  _getPlacement () {
     const parentDropdown = this._parent;
     if (parentDropdown.classList.contains(CLASS_NAME_DROPEND)) {
       return PLACEMENT_RIGHT;
@@ -1896,10 +1948,12 @@ class Dropdown extends BaseComponent {
     }
     return isEnd ? PLACEMENT_BOTTOMEND : PLACEMENT_BOTTOM;
   }
-  _detectNavbar() {
+
+  _detectNavbar () {
     return this._element.closest(SELECTOR_NAVBAR) !== null;
   }
-  _getOffset() {
+
+  _getOffset () {
     const {
       offset
     } = this._config;
@@ -1911,7 +1965,8 @@ class Dropdown extends BaseComponent {
     }
     return offset;
   }
-  _getPopperConfig() {
+
+  _getPopperConfig () {
     const defaultBsPopperConfig = {
       placement: this._getPlacement(),
       modifiers: [{
@@ -1940,7 +1995,8 @@ class Dropdown extends BaseComponent {
       ...execute(this._config.popperConfig, [defaultBsPopperConfig])
     };
   }
-  _selectMenuItem({
+
+  _selectMenuItem ({
     key,
     target
   }) {
@@ -1955,7 +2011,7 @@ class Dropdown extends BaseComponent {
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Dropdown.getOrCreateInstance(this, config);
       if (typeof config !== 'string') {
@@ -1967,7 +2023,8 @@ class Dropdown extends BaseComponent {
       data[config]();
     });
   }
-  static clearMenus(event) {
+
+  static clearMenus (event) {
     if (event.button === RIGHT_MOUSE_BUTTON || event.type === 'keyup' && event.key !== TAB_KEY$1) {
       return;
     }
@@ -1996,7 +2053,8 @@ class Dropdown extends BaseComponent {
       context._completeHide(relatedTarget);
     }
   }
-  static dataApiKeydownHandler(event) {
+
+  static dataApiKeydownHandler (event) {
     // If not an UP | DOWN | ESCAPE key => not a dropdown command
     // If input/textarea && if key is other than ESCAPE => not a dropdown command
 
@@ -2055,7 +2113,6 @@ defineJQueryPlugin(Dropdown);
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -2085,7 +2142,7 @@ const DefaultType$8 = {
  */
 
 class Backdrop extends Config {
-  constructor(config) {
+  constructor (config) {
     super();
     this._config = this._getConfig(config);
     this._isAppended = false;
@@ -2093,18 +2150,20 @@ class Backdrop extends Config {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$8;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$8;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$9;
   }
 
   // Public
-  show(callback) {
+  show (callback) {
     if (!this._config.isVisible) {
       execute(callback);
       return;
@@ -2119,7 +2178,8 @@ class Backdrop extends Config {
       execute(callback);
     });
   }
-  hide(callback) {
+
+  hide (callback) {
     if (!this._config.isVisible) {
       execute(callback);
       return;
@@ -2130,7 +2190,8 @@ class Backdrop extends Config {
       execute(callback);
     });
   }
-  dispose() {
+
+  dispose () {
     if (!this._isAppended) {
       return;
     }
@@ -2140,7 +2201,7 @@ class Backdrop extends Config {
   }
 
   // Private
-  _getElement() {
+  _getElement () {
     if (!this._element) {
       const backdrop = document.createElement('div');
       backdrop.className = this._config.className;
@@ -2151,12 +2212,14 @@ class Backdrop extends Config {
     }
     return this._element;
   }
-  _configAfterMerge(config) {
+
+  _configAfterMerge (config) {
     // use getElement() with the default "body" to get a fresh Element on each instantiation
     config.rootElement = getElement(config.rootElement);
     return config;
   }
-  _append() {
+
+  _append () {
     if (this._isAppended) {
       return;
     }
@@ -2167,7 +2230,8 @@ class Backdrop extends Config {
     });
     this._isAppended = true;
   }
-  _emulateAnimation(callback) {
+
+  _emulateAnimation (callback) {
     executeAfterTransition(callback, this._getElement(), this._config.isAnimated);
   }
 }
@@ -2178,7 +2242,6 @@ class Backdrop extends Config {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -2206,7 +2269,7 @@ const DefaultType$7 = {
  */
 
 class FocusTrap extends Config {
-  constructor(config) {
+  constructor (config) {
     super();
     this._config = this._getConfig(config);
     this._isActive = false;
@@ -2214,18 +2277,20 @@ class FocusTrap extends Config {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$7;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$7;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$8;
   }
 
   // Public
-  activate() {
+  activate () {
     if (this._isActive) {
       return;
     }
@@ -2237,7 +2302,8 @@ class FocusTrap extends Config {
     EventHandler.on(document, EVENT_KEYDOWN_TAB, event => this._handleKeydown(event));
     this._isActive = true;
   }
-  deactivate() {
+
+  deactivate () {
     if (!this._isActive) {
       return;
     }
@@ -2246,7 +2312,7 @@ class FocusTrap extends Config {
   }
 
   // Private
-  _handleFocusin(event) {
+  _handleFocusin (event) {
     const {
       trapElement
     } = this._config;
@@ -2262,7 +2328,8 @@ class FocusTrap extends Config {
       elements[0].focus();
     }
   }
-  _handleKeydown(event) {
+
+  _handleKeydown (event) {
     if (event.key !== TAB_KEY) {
       return;
     }
@@ -2276,7 +2343,6 @@ class FocusTrap extends Config {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -2292,17 +2358,18 @@ const PROPERTY_MARGIN = 'margin-right';
  */
 
 class ScrollBarHelper {
-  constructor() {
+  constructor () {
     this._element = document.body;
   }
 
   // Public
-  getWidth() {
+  getWidth () {
     // https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth#usage_notes
     const documentWidth = document.documentElement.clientWidth;
     return Math.abs(window.innerWidth - documentWidth);
   }
-  hide() {
+
+  hide () {
     const width = this.getWidth();
     this._disableOverFlow();
     // give padding to element to balance the hidden scrollbar width
@@ -2311,22 +2378,25 @@ class ScrollBarHelper {
     this._setElementAttributes(SELECTOR_FIXED_CONTENT, PROPERTY_PADDING, calculatedValue => calculatedValue + width);
     this._setElementAttributes(SELECTOR_STICKY_CONTENT, PROPERTY_MARGIN, calculatedValue => calculatedValue - width);
   }
-  reset() {
+
+  reset () {
     this._resetElementAttributes(this._element, 'overflow');
     this._resetElementAttributes(this._element, PROPERTY_PADDING);
     this._resetElementAttributes(SELECTOR_FIXED_CONTENT, PROPERTY_PADDING);
     this._resetElementAttributes(SELECTOR_STICKY_CONTENT, PROPERTY_MARGIN);
   }
-  isOverflowing() {
+
+  isOverflowing () {
     return this.getWidth() > 0;
   }
 
   // Private
-  _disableOverFlow() {
+  _disableOverFlow () {
     this._saveInitialAttribute(this._element, 'overflow');
     this._element.style.overflow = 'hidden';
   }
-  _setElementAttributes(selector, styleProperty, callback) {
+
+  _setElementAttributes (selector, styleProperty, callback) {
     const scrollbarWidth = this.getWidth();
     const manipulationCallBack = element => {
       if (element !== this._element && window.innerWidth > element.clientWidth + scrollbarWidth) {
@@ -2338,13 +2408,15 @@ class ScrollBarHelper {
     };
     this._applyManipulationCallback(selector, manipulationCallBack);
   }
-  _saveInitialAttribute(element, styleProperty) {
+
+  _saveInitialAttribute (element, styleProperty) {
     const actualValue = element.style.getPropertyValue(styleProperty);
     if (actualValue) {
       Manipulator.setDataAttribute(element, styleProperty, actualValue);
     }
   }
-  _resetElementAttributes(selector, styleProperty) {
+
+  _resetElementAttributes (selector, styleProperty) {
     const manipulationCallBack = element => {
       const value = Manipulator.getDataAttribute(element, styleProperty);
       // We only want to remove the property if the value is `null`; the value can also be zero
@@ -2357,7 +2429,8 @@ class ScrollBarHelper {
     };
     this._applyManipulationCallback(selector, manipulationCallBack);
   }
-  _applyManipulationCallback(selector, callBack) {
+
+  _applyManipulationCallback (selector, callBack) {
     if (isElement(selector)) {
       callBack(selector);
       return;
@@ -2374,7 +2447,6 @@ class ScrollBarHelper {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -2419,7 +2491,7 @@ const DefaultType$6 = {
  */
 
 class Modal extends BaseComponent {
-  constructor(element, config) {
+  constructor (element, config) {
     super(element, config);
     this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element);
     this._backdrop = this._initializeBackDrop();
@@ -2431,21 +2503,24 @@ class Modal extends BaseComponent {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$6;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$6;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$7;
   }
 
   // Public
-  toggle(relatedTarget) {
+  toggle (relatedTarget) {
     return this._isShown ? this.hide() : this.show(relatedTarget);
   }
-  show(relatedTarget) {
+
+  show (relatedTarget) {
     if (this._isShown || this._isTransitioning) {
       return;
     }
@@ -2462,7 +2537,8 @@ class Modal extends BaseComponent {
     this._adjustDialog();
     this._backdrop.show(() => this._showElement(relatedTarget));
   }
-  hide() {
+
+  hide () {
     if (!this._isShown || this._isTransitioning) {
       return;
     }
@@ -2476,31 +2552,35 @@ class Modal extends BaseComponent {
     this._element.classList.remove(CLASS_NAME_SHOW$4);
     this._queueCallback(() => this._hideModal(), this._element, this._isAnimated());
   }
-  dispose() {
+
+  dispose () {
     EventHandler.off(window, EVENT_KEY$4);
     EventHandler.off(this._dialog, EVENT_KEY$4);
     this._backdrop.dispose();
     this._focustrap.deactivate();
     super.dispose();
   }
-  handleUpdate() {
+
+  handleUpdate () {
     this._adjustDialog();
   }
 
   // Private
-  _initializeBackDrop() {
+  _initializeBackDrop () {
     return new Backdrop({
       isVisible: Boolean(this._config.backdrop),
       // 'static' option will be translated to true, and booleans will keep their value,
       isAnimated: this._isAnimated()
     });
   }
-  _initializeFocusTrap() {
+
+  _initializeFocusTrap () {
     return new FocusTrap({
       trapElement: this._element
     });
   }
-  _showElement(relatedTarget) {
+
+  _showElement (relatedTarget) {
     // try to append dynamic modal
     if (!document.body.contains(this._element)) {
       document.body.append(this._element);
@@ -2527,7 +2607,8 @@ class Modal extends BaseComponent {
     };
     this._queueCallback(transitionComplete, this._dialog, this._isAnimated());
   }
-  _addEventListeners() {
+
+  _addEventListeners () {
     EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS$1, event => {
       if (event.key !== ESCAPE_KEY$1) {
         return;
@@ -2559,7 +2640,8 @@ class Modal extends BaseComponent {
       });
     });
   }
-  _hideModal() {
+
+  _hideModal () {
     this._element.style.display = 'none';
     this._element.setAttribute('aria-hidden', true);
     this._element.removeAttribute('aria-modal');
@@ -2572,10 +2654,12 @@ class Modal extends BaseComponent {
       EventHandler.trigger(this._element, EVENT_HIDDEN$4);
     });
   }
-  _isAnimated() {
+
+  _isAnimated () {
     return this._element.classList.contains(CLASS_NAME_FADE$3);
   }
-  _triggerBackdropTransition() {
+
+  _triggerBackdropTransition () {
     const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED$1);
     if (hideEvent.defaultPrevented) {
       return;
@@ -2603,7 +2687,7 @@ class Modal extends BaseComponent {
    * The following methods are used to handle overflowing modals
    */
 
-  _adjustDialog() {
+  _adjustDialog () {
     const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
     const scrollbarWidth = this._scrollBar.getWidth();
     const isBodyOverflowing = scrollbarWidth > 0;
@@ -2616,13 +2700,14 @@ class Modal extends BaseComponent {
       this._element.style[property] = `${scrollbarWidth}px`;
     }
   }
-  _resetAdjustments() {
+
+  _resetAdjustments () {
     this._element.style.paddingLeft = '';
     this._element.style.paddingRight = '';
   }
 
   // Static
-  static jQueryInterface(config, relatedTarget) {
+  static jQueryInterface (config, relatedTarget) {
     return this.each(function () {
       const data = Modal.getOrCreateInstance(this, config);
       if (typeof config !== 'string') {
@@ -2680,7 +2765,6 @@ defineJQueryPlugin(Modal);
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -2721,7 +2805,7 @@ const DefaultType$5 = {
  */
 
 class Offcanvas extends BaseComponent {
-  constructor(element, config) {
+  constructor (element, config) {
     super(element, config);
     this._isShown = false;
     this._backdrop = this._initializeBackDrop();
@@ -2730,21 +2814,24 @@ class Offcanvas extends BaseComponent {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$5;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$5;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$6;
   }
 
   // Public
-  toggle(relatedTarget) {
+  toggle (relatedTarget) {
     return this._isShown ? this.hide() : this.show(relatedTarget);
   }
-  show(relatedTarget) {
+
+  show (relatedTarget) {
     if (this._isShown) {
       return;
     }
@@ -2774,7 +2861,8 @@ class Offcanvas extends BaseComponent {
     };
     this._queueCallback(completeCallBack, this._element, true);
   }
-  hide() {
+
+  hide () {
     if (!this._isShown) {
       return;
     }
@@ -2798,14 +2886,15 @@ class Offcanvas extends BaseComponent {
     };
     this._queueCallback(completeCallback, this._element, true);
   }
-  dispose() {
+
+  dispose () {
     this._backdrop.dispose();
     this._focustrap.deactivate();
     super.dispose();
   }
 
   // Private
-  _initializeBackDrop() {
+  _initializeBackDrop () {
     const clickCallback = () => {
       if (this._config.backdrop === 'static') {
         EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
@@ -2824,12 +2913,14 @@ class Offcanvas extends BaseComponent {
       clickCallback: isVisible ? clickCallback : null
     });
   }
-  _initializeFocusTrap() {
+
+  _initializeFocusTrap () {
     return new FocusTrap({
       trapElement: this._element
     });
   }
-  _addEventListeners() {
+
+  _addEventListeners () {
     EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, event => {
       if (event.key !== ESCAPE_KEY) {
         return;
@@ -2843,7 +2934,7 @@ class Offcanvas extends BaseComponent {
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Offcanvas.getOrCreateInstance(this, config);
       if (typeof config !== 'string') {
@@ -2973,7 +3064,7 @@ const allowedAttribute = (attribute, allowedAttributeList) => {
   // Check if a regular expression validates the attribute.
   return allowedAttributeList.filter(attributeRegex => attributeRegex instanceof RegExp).some(regex => regex.test(attributeName));
 };
-function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
+function sanitizeHtml (unsafeHtml, allowList, sanitizeFunction) {
   if (!unsafeHtml.length) {
     return unsafeHtml;
   }
@@ -3006,7 +3097,6 @@ function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -3042,30 +3132,34 @@ const DefaultContentType = {
  */
 
 class TemplateFactory extends Config {
-  constructor(config) {
+  constructor (config) {
     super();
     this._config = this._getConfig(config);
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$4;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$4;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$5;
   }
 
   // Public
-  getContent() {
+  getContent () {
     return Object.values(this._config.content).map(config => this._resolvePossibleFunction(config)).filter(Boolean);
   }
-  hasContent() {
+
+  hasContent () {
     return this.getContent().length > 0;
   }
-  changeContent(content) {
+
+  changeContent (content) {
     this._checkContent(content);
     this._config.content = {
       ...this._config.content,
@@ -3073,7 +3167,8 @@ class TemplateFactory extends Config {
     };
     return this;
   }
-  toHtml() {
+
+  toHtml () {
     const templateWrapper = document.createElement('div');
     templateWrapper.innerHTML = this._maybeSanitize(this._config.template);
     for (const [selector, text] of Object.entries(this._config.content)) {
@@ -3088,11 +3183,12 @@ class TemplateFactory extends Config {
   }
 
   // Private
-  _typeCheckConfig(config) {
+  _typeCheckConfig (config) {
     super._typeCheckConfig(config);
     this._checkContent(config.content);
   }
-  _checkContent(arg) {
+
+  _checkContent (arg) {
     for (const [selector, content] of Object.entries(arg)) {
       super._typeCheckConfig({
         selector,
@@ -3100,7 +3196,8 @@ class TemplateFactory extends Config {
       }, DefaultContentType);
     }
   }
-  _setContent(template, content, selector) {
+
+  _setContent (template, content, selector) {
     const templateElement = SelectorEngine.findOne(selector, template);
     if (!templateElement) {
       return;
@@ -3120,13 +3217,16 @@ class TemplateFactory extends Config {
     }
     templateElement.textContent = content;
   }
-  _maybeSanitize(arg) {
+
+  _maybeSanitize (arg) {
     return this._config.sanitize ? sanitizeHtml(arg, this._config.allowList, this._config.sanitizeFn) : arg;
   }
-  _resolvePossibleFunction(arg) {
+
+  _resolvePossibleFunction (arg) {
     return execute(arg, [this]);
   }
-  _putElementInTemplate(element, templateElement) {
+
+  _putElementInTemplate (element, templateElement) {
     if (this._config.html) {
       templateElement.innerHTML = '';
       templateElement.append(element);
@@ -3142,7 +3242,6 @@ class TemplateFactory extends Config {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -3221,7 +3320,7 @@ const DefaultType$3 = {
  */
 
 class Tooltip extends BaseComponent {
-  constructor(element, config) {
+  constructor (element, config) {
     if (typeof Popper === 'undefined') {
       throw new TypeError('Bootstrap\'s tooltips require Popper (https://popper.js.org)');
     }
@@ -3245,27 +3344,32 @@ class Tooltip extends BaseComponent {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$3;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$3;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$4;
   }
 
   // Public
-  enable() {
+  enable () {
     this._isEnabled = true;
   }
-  disable() {
+
+  disable () {
     this._isEnabled = false;
   }
-  toggleEnabled() {
+
+  toggleEnabled () {
     this._isEnabled = !this._isEnabled;
   }
-  toggle() {
+
+  toggle () {
     if (!this._isEnabled) {
       return;
     }
@@ -3276,7 +3380,8 @@ class Tooltip extends BaseComponent {
     }
     this._enter();
   }
-  dispose() {
+
+  dispose () {
     clearTimeout(this._timeout);
     EventHandler.off(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler);
     if (this._element.getAttribute('data-bs-original-title')) {
@@ -3285,7 +3390,8 @@ class Tooltip extends BaseComponent {
     this._disposePopper();
     super.dispose();
   }
-  show() {
+
+  show () {
     if (this._element.style.display === 'none') {
       throw new Error('Please use show on visible elements');
     }
@@ -3331,7 +3437,8 @@ class Tooltip extends BaseComponent {
     };
     this._queueCallback(complete, this.tip, this._isAnimated());
   }
-  hide() {
+
+  hide () {
     if (!this._isShown()) {
       return;
     }
@@ -3366,23 +3473,26 @@ class Tooltip extends BaseComponent {
     };
     this._queueCallback(complete, this.tip, this._isAnimated());
   }
-  update() {
+
+  update () {
     if (this._popper) {
       this._popper.update();
     }
   }
 
   // Protected
-  _isWithContent() {
+  _isWithContent () {
     return Boolean(this._getTitle());
   }
-  _getTipElement() {
+
+  _getTipElement () {
     if (!this.tip) {
       this.tip = this._createTipElement(this._newContent || this._getContentForTemplate());
     }
     return this.tip;
   }
-  _createTipElement(content) {
+
+  _createTipElement (content) {
     const tip = this._getTemplateFactory(content).toHtml();
 
     // TODO: remove this check in v6
@@ -3399,14 +3509,16 @@ class Tooltip extends BaseComponent {
     }
     return tip;
   }
-  setContent(content) {
+
+  setContent (content) {
     this._newContent = content;
     if (this._isShown()) {
       this._disposePopper();
       this.show();
     }
   }
-  _getTemplateFactory(content) {
+
+  _getTemplateFactory (content) {
     if (this._templateFactory) {
       this._templateFactory.changeContent(content);
     } else {
@@ -3420,31 +3532,37 @@ class Tooltip extends BaseComponent {
     }
     return this._templateFactory;
   }
-  _getContentForTemplate() {
+
+  _getContentForTemplate () {
     return {
       [SELECTOR_TOOLTIP_INNER]: this._getTitle()
     };
   }
-  _getTitle() {
+
+  _getTitle () {
     return this._resolvePossibleFunction(this._config.title) || this._element.getAttribute('data-bs-original-title');
   }
 
   // Private
-  _initializeOnDelegatedTarget(event) {
+  _initializeOnDelegatedTarget (event) {
     return this.constructor.getOrCreateInstance(event.delegateTarget, this._getDelegateConfig());
   }
-  _isAnimated() {
+
+  _isAnimated () {
     return this._config.animation || this.tip && this.tip.classList.contains(CLASS_NAME_FADE$2);
   }
-  _isShown() {
+
+  _isShown () {
     return this.tip && this.tip.classList.contains(CLASS_NAME_SHOW$2);
   }
-  _createPopper(tip) {
+
+  _createPopper (tip) {
     const placement = execute(this._config.placement, [this, tip, this._element]);
     const attachment = AttachmentMap[placement.toUpperCase()];
     return Popper.createPopper(this._element, tip, this._getPopperConfig(attachment));
   }
-  _getOffset() {
+
+  _getOffset () {
     const {
       offset
     } = this._config;
@@ -3456,10 +3574,12 @@ class Tooltip extends BaseComponent {
     }
     return offset;
   }
-  _resolvePossibleFunction(arg) {
+
+  _resolvePossibleFunction (arg) {
     return execute(arg, [this._element]);
   }
-  _getPopperConfig(attachment) {
+
+  _getPopperConfig (attachment) {
     const defaultBsPopperConfig = {
       placement: attachment,
       modifiers: [{
@@ -3498,7 +3618,8 @@ class Tooltip extends BaseComponent {
       ...execute(this._config.popperConfig, [defaultBsPopperConfig])
     };
   }
-  _setListeners() {
+
+  _setListeners () {
     const triggers = this._config.trigger.split(' ');
     for (const trigger of triggers) {
       if (trigger === 'click') {
@@ -3528,7 +3649,8 @@ class Tooltip extends BaseComponent {
     };
     EventHandler.on(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler);
   }
-  _fixTitle() {
+
+  _fixTitle () {
     const title = this._element.getAttribute('title');
     if (!title) {
       return;
@@ -3539,7 +3661,8 @@ class Tooltip extends BaseComponent {
     this._element.setAttribute('data-bs-original-title', title); // DO NOT USE IT. Is only for backwards compatibility
     this._element.removeAttribute('title');
   }
-  _enter() {
+
+  _enter () {
     if (this._isShown() || this._isHovered) {
       this._isHovered = true;
       return;
@@ -3551,7 +3674,8 @@ class Tooltip extends BaseComponent {
       }
     }, this._config.delay.show);
   }
-  _leave() {
+
+  _leave () {
     if (this._isWithActiveTrigger()) {
       return;
     }
@@ -3562,14 +3686,17 @@ class Tooltip extends BaseComponent {
       }
     }, this._config.delay.hide);
   }
-  _setTimeout(handler, timeout) {
+
+  _setTimeout (handler, timeout) {
     clearTimeout(this._timeout);
     this._timeout = setTimeout(handler, timeout);
   }
-  _isWithActiveTrigger() {
+
+  _isWithActiveTrigger () {
     return Object.values(this._activeTrigger).includes(true);
   }
-  _getConfig(config) {
+
+  _getConfig (config) {
     const dataAttributes = Manipulator.getDataAttributes(this._element);
     for (const dataAttribute of Object.keys(dataAttributes)) {
       if (DISALLOWED_ATTRIBUTES.has(dataAttribute)) {
@@ -3585,7 +3712,8 @@ class Tooltip extends BaseComponent {
     this._typeCheckConfig(config);
     return config;
   }
-  _configAfterMerge(config) {
+
+  _configAfterMerge (config) {
     config.container = config.container === false ? document.body : getElement(config.container);
     if (typeof config.delay === 'number') {
       config.delay = {
@@ -3601,7 +3729,8 @@ class Tooltip extends BaseComponent {
     }
     return config;
   }
-  _getDelegateConfig() {
+
+  _getDelegateConfig () {
     const config = {};
     for (const [key, value] of Object.entries(this._config)) {
       if (this.constructor.Default[key] !== value) {
@@ -3616,7 +3745,8 @@ class Tooltip extends BaseComponent {
     // `Object.fromEntries(keysWithDifferentValues)`
     return config;
   }
-  _disposePopper() {
+
+  _disposePopper () {
     if (this._popper) {
       this._popper.destroy();
       this._popper = null;
@@ -3628,7 +3758,7 @@ class Tooltip extends BaseComponent {
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Tooltip.getOrCreateInstance(this, config);
       if (typeof config !== 'string') {
@@ -3654,7 +3784,6 @@ defineJQueryPlugin(Tooltip);
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -3682,34 +3811,37 @@ const DefaultType$2 = {
 
 class Popover extends Tooltip {
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$2;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$2;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$3;
   }
 
   // Overrides
-  _isWithContent() {
+  _isWithContent () {
     return this._getTitle() || this._getContent();
   }
 
   // Private
-  _getContentForTemplate() {
+  _getContentForTemplate () {
     return {
       [SELECTOR_TITLE]: this._getTitle(),
       [SELECTOR_CONTENT]: this._getContent()
     };
   }
-  _getContent() {
+
+  _getContent () {
     return this._resolvePossibleFunction(this._config.content);
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Popover.getOrCreateInstance(this, config);
       if (typeof config !== 'string') {
@@ -3735,7 +3867,6 @@ defineJQueryPlugin(Popover);
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -3781,7 +3912,7 @@ const DefaultType$1 = {
  */
 
 class ScrollSpy extends BaseComponent {
-  constructor(element, config) {
+  constructor (element, config) {
     super(element, config);
 
     // this._element is the observablesContainer and config.target the menu links wrapper
@@ -3798,18 +3929,20 @@ class ScrollSpy extends BaseComponent {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default$1;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType$1;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME$2;
   }
 
   // Public
-  refresh() {
+  refresh () {
     this._initializeTargetsAndObservables();
     this._maybeEnableSmoothScroll();
     if (this._observer) {
@@ -3821,13 +3954,14 @@ class ScrollSpy extends BaseComponent {
       this._observer.observe(section);
     }
   }
-  dispose() {
+
+  dispose () {
     this._observer.disconnect();
     super.dispose();
   }
 
   // Private
-  _configAfterMerge(config) {
+  _configAfterMerge (config) {
     // TODO: on v6 target should be given explicitly & remove the {target: 'ss-target'} case
     config.target = getElement(config.target) || document.body;
 
@@ -3838,7 +3972,8 @@ class ScrollSpy extends BaseComponent {
     }
     return config;
   }
-  _maybeEnableSmoothScroll() {
+
+  _maybeEnableSmoothScroll () {
     if (!this._config.smoothScroll) {
       return;
     }
@@ -3864,7 +3999,8 @@ class ScrollSpy extends BaseComponent {
       }
     });
   }
-  _getNewObserver() {
+
+  _getNewObserver () {
     const options = {
       root: this._rootElement,
       threshold: this._config.threshold,
@@ -3874,7 +4010,7 @@ class ScrollSpy extends BaseComponent {
   }
 
   // The logic of selection
-  _observerCallback(entries) {
+  _observerCallback (entries) {
     const targetElement = entry => this._targetLinks.get(`#${entry.target.id}`);
     const activate = entry => {
       this._previousScrollData.visibleEntryTop = entry.target.offsetTop;
@@ -3906,7 +4042,8 @@ class ScrollSpy extends BaseComponent {
       }
     }
   }
-  _initializeTargetsAndObservables() {
+
+  _initializeTargetsAndObservables () {
     this._targetLinks = new Map();
     this._observableSections = new Map();
     const targetLinks = SelectorEngine.find(SELECTOR_TARGET_LINKS, this._config.target);
@@ -3924,7 +4061,8 @@ class ScrollSpy extends BaseComponent {
       }
     }
   }
-  _process(target) {
+
+  _process (target) {
     if (this._activeTarget === target) {
       return;
     }
@@ -3936,7 +4074,8 @@ class ScrollSpy extends BaseComponent {
       relatedTarget: target
     });
   }
-  _activateParents(target) {
+
+  _activateParents (target) {
     // Activate dropdown parents
     if (target.classList.contains(CLASS_NAME_DROPDOWN_ITEM)) {
       SelectorEngine.findOne(SELECTOR_DROPDOWN_TOGGLE$1, target.closest(SELECTOR_DROPDOWN)).classList.add(CLASS_NAME_ACTIVE$1);
@@ -3950,7 +4089,8 @@ class ScrollSpy extends BaseComponent {
       }
     }
   }
-  _clearActiveClass(parent) {
+
+  _clearActiveClass (parent) {
     parent.classList.remove(CLASS_NAME_ACTIVE$1);
     const activeNodes = SelectorEngine.find(`${SELECTOR_TARGET_LINKS}.${CLASS_NAME_ACTIVE$1}`, parent);
     for (const node of activeNodes) {
@@ -3959,7 +4099,7 @@ class ScrollSpy extends BaseComponent {
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = ScrollSpy.getOrCreateInstance(this, config);
       if (typeof config !== 'string') {
@@ -3995,7 +4135,6 @@ defineJQueryPlugin(ScrollSpy);
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
-
 
 /**
  * Constants
@@ -4036,7 +4175,7 @@ const SELECTOR_DATA_TOGGLE_ACTIVE = `.${CLASS_NAME_ACTIVE}[data-bs-toggle="tab"]
  */
 
 class Tab extends BaseComponent {
-  constructor(element) {
+  constructor (element) {
     super(element);
     this._parent = this._element.closest(SELECTOR_TAB_PANEL);
     if (!this._parent) {
@@ -4051,12 +4190,12 @@ class Tab extends BaseComponent {
   }
 
   // Getters
-  static get NAME() {
+  static get NAME () {
     return NAME$1;
   }
 
   // Public
-  show() {
+  show () {
     // Shows this elem and deactivate the active sibling if exists
     const innerElem = this._element;
     if (this._elemIsActive(innerElem)) {
@@ -4065,9 +4204,11 @@ class Tab extends BaseComponent {
 
     // Search for active tab on same parent to deactivate it
     const active = this._getActiveElem();
-    const hideEvent = active ? EventHandler.trigger(active, EVENT_HIDE$1, {
-      relatedTarget: innerElem
-    }) : null;
+    const hideEvent = active
+      ? EventHandler.trigger(active, EVENT_HIDE$1, {
+        relatedTarget: innerElem
+      })
+      : null;
     const showEvent = EventHandler.trigger(innerElem, EVENT_SHOW$1, {
       relatedTarget: active
     });
@@ -4079,7 +4220,7 @@ class Tab extends BaseComponent {
   }
 
   // Private
-  _activate(element, relatedElem) {
+  _activate (element, relatedElem) {
     if (!element) {
       return;
     }
@@ -4100,7 +4241,8 @@ class Tab extends BaseComponent {
     };
     this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE$1));
   }
-  _deactivate(element, relatedElem) {
+
+  _deactivate (element, relatedElem) {
     if (!element) {
       return;
     }
@@ -4122,7 +4264,8 @@ class Tab extends BaseComponent {
     };
     this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE$1));
   }
-  _keydown(event) {
+
+  _keydown (event) {
     if (![ARROW_LEFT_KEY, ARROW_RIGHT_KEY, ARROW_UP_KEY, ARROW_DOWN_KEY, HOME_KEY, END_KEY].includes(event.key)) {
       return;
     }
@@ -4143,20 +4286,24 @@ class Tab extends BaseComponent {
       Tab.getOrCreateInstance(nextActiveElement).show();
     }
   }
-  _getChildren() {
+
+  _getChildren () {
     // collection of inner elements
     return SelectorEngine.find(SELECTOR_INNER_ELEM, this._parent);
   }
-  _getActiveElem() {
+
+  _getActiveElem () {
     return this._getChildren().find(child => this._elemIsActive(child)) || null;
   }
-  _setInitialAttributes(parent, children) {
+
+  _setInitialAttributes (parent, children) {
     this._setAttributeIfNotExists(parent, 'role', 'tablist');
     for (const child of children) {
       this._setInitialAttributesOnChild(child);
     }
   }
-  _setInitialAttributesOnChild(child) {
+
+  _setInitialAttributesOnChild (child) {
     child = this._getInnerElement(child);
     const isActive = this._elemIsActive(child);
     const outerElem = this._getOuterElement(child);
@@ -4172,7 +4319,8 @@ class Tab extends BaseComponent {
     // set attributes to the related panel too
     this._setInitialAttributesOnTargetPanel(child);
   }
-  _setInitialAttributesOnTargetPanel(child) {
+
+  _setInitialAttributesOnTargetPanel (child) {
     const target = SelectorEngine.getElementFromSelector(child);
     if (!target) {
       return;
@@ -4182,7 +4330,8 @@ class Tab extends BaseComponent {
       this._setAttributeIfNotExists(target, 'aria-labelledby', `${child.id}`);
     }
   }
-  _toggleDropDown(element, open) {
+
+  _toggleDropDown (element, open) {
     const outerElem = this._getOuterElement(element);
     if (!outerElem.classList.contains(CLASS_DROPDOWN)) {
       return;
@@ -4197,27 +4346,29 @@ class Tab extends BaseComponent {
     toggle(SELECTOR_DROPDOWN_MENU, CLASS_NAME_SHOW$1);
     outerElem.setAttribute('aria-expanded', open);
   }
-  _setAttributeIfNotExists(element, attribute, value) {
+
+  _setAttributeIfNotExists (element, attribute, value) {
     if (!element.hasAttribute(attribute)) {
       element.setAttribute(attribute, value);
     }
   }
-  _elemIsActive(elem) {
+
+  _elemIsActive (elem) {
     return elem.classList.contains(CLASS_NAME_ACTIVE);
   }
 
   // Try to get the inner element (usually the .nav-link)
-  _getInnerElement(elem) {
+  _getInnerElement (elem) {
     return elem.matches(SELECTOR_INNER_ELEM) ? elem : SelectorEngine.findOne(SELECTOR_INNER_ELEM, elem);
   }
 
   // Try to get the outer element (usually the .nav-item)
-  _getOuterElement(elem) {
+  _getOuterElement (elem) {
     return elem.closest(SELECTOR_OUTER) || elem;
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Tab.getOrCreateInstance(this);
       if (typeof config !== 'string') {
@@ -4266,7 +4417,6 @@ defineJQueryPlugin(Tab);
  * --------------------------------------------------------------------------
  */
 
-
 /**
  * Constants
  */
@@ -4302,7 +4452,7 @@ const Default = {
  */
 
 class Toast extends BaseComponent {
-  constructor(element, config) {
+  constructor (element, config) {
     super(element, config);
     this._timeout = null;
     this._hasMouseInteraction = false;
@@ -4311,18 +4461,20 @@ class Toast extends BaseComponent {
   }
 
   // Getters
-  static get Default() {
+  static get Default () {
     return Default;
   }
-  static get DefaultType() {
+
+  static get DefaultType () {
     return DefaultType;
   }
-  static get NAME() {
+
+  static get NAME () {
     return NAME;
   }
 
   // Public
-  show() {
+  show () {
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW);
     if (showEvent.defaultPrevented) {
       return;
@@ -4341,7 +4493,8 @@ class Toast extends BaseComponent {
     this._element.classList.add(CLASS_NAME_SHOW, CLASS_NAME_SHOWING);
     this._queueCallback(complete, this._element, this._config.animation);
   }
-  hide() {
+
+  hide () {
     if (!this.isShown()) {
       return;
     }
@@ -4357,20 +4510,22 @@ class Toast extends BaseComponent {
     this._element.classList.add(CLASS_NAME_SHOWING);
     this._queueCallback(complete, this._element, this._config.animation);
   }
-  dispose() {
+
+  dispose () {
     this._clearTimeout();
     if (this.isShown()) {
       this._element.classList.remove(CLASS_NAME_SHOW);
     }
     super.dispose();
   }
-  isShown() {
+
+  isShown () {
     return this._element.classList.contains(CLASS_NAME_SHOW);
   }
 
   // Private
 
-  _maybeScheduleHide() {
+  _maybeScheduleHide () {
     if (!this._config.autohide) {
       return;
     }
@@ -4381,20 +4536,21 @@ class Toast extends BaseComponent {
       this.hide();
     }, this._config.delay);
   }
-  _onInteraction(event, isInteracting) {
+
+  _onInteraction (event, isInteracting) {
     switch (event.type) {
       case 'mouseover':
       case 'mouseout':
-        {
-          this._hasMouseInteraction = isInteracting;
-          break;
-        }
+      {
+        this._hasMouseInteraction = isInteracting;
+        break;
+      }
       case 'focusin':
       case 'focusout':
-        {
-          this._hasKeyboardInteraction = isInteracting;
-          break;
-        }
+      {
+        this._hasKeyboardInteraction = isInteracting;
+        break;
+      }
     }
     if (isInteracting) {
       this._clearTimeout();
@@ -4406,19 +4562,21 @@ class Toast extends BaseComponent {
     }
     this._maybeScheduleHide();
   }
-  _setListeners() {
+
+  _setListeners () {
     EventHandler.on(this._element, EVENT_MOUSEOVER, event => this._onInteraction(event, true));
     EventHandler.on(this._element, EVENT_MOUSEOUT, event => this._onInteraction(event, false));
     EventHandler.on(this._element, EVENT_FOCUSIN, event => this._onInteraction(event, true));
     EventHandler.on(this._element, EVENT_FOCUSOUT, event => this._onInteraction(event, false));
   }
-  _clearTimeout() {
+
+  _clearTimeout () {
     clearTimeout(this._timeout);
     this._timeout = null;
   }
 
   // Static
-  static jQueryInterface(config) {
+  static jQueryInterface (config) {
     return this.each(function () {
       const data = Toast.getOrCreateInstance(this, config);
       if (typeof config === 'string') {
@@ -4444,4 +4602,4 @@ enableDismissTrigger(Toast);
 defineJQueryPlugin(Toast);
 
 export { Alert, Button, Carousel, Collapse, Dropdown, Modal, Offcanvas, Popover, ScrollSpy, Tab, Toast, Tooltip };
-//# sourceMappingURL=bootstrap.esm.js.map
+// # sourceMappingURL=bootstrap.esm.js.map
