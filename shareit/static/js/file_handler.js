@@ -1,6 +1,13 @@
 // Development JS
 const dropbox = document.getElementById('dropbox');
 
+function showWarningModal() {
+  var warningModal = new bootstrap.Modal(document.getElementById('warningModal'), {
+      keyboard: true
+  });
+  warningModal.show();
+}
+
 function preventDefaults (e) {
   e.preventDefault();
   e.stopPropagation();
@@ -39,6 +46,11 @@ function handleFiles (files) {
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
+
+    if (file.size > 300000000) {
+      showWarningModal();
+      break;
+    }
     const row = document.createElement('tr');
 
     const fileNameCell = document.createElement('td');
