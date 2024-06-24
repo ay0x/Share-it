@@ -2,16 +2,33 @@
 
 {% block content%}
 <main class="mt-5 pt-5">
-  <!-- Modal HTML -->
-  <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal HTML -->
+    <div class="modal fade" id="FileLimitModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalLabel">Warning</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Your file size is more than 300MB, please sign up or log in to upload an unlimited file size.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- Modal HTML -->
+  <div class="modal fade" id="SameFileModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+          <h5 class="modal-title" id="ModalLabel">Warning</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Your file size is more than 300MB, please sign up or log in to upload an unlimited file size.</p>
+          <p>File already selected!</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -51,12 +68,12 @@
               </div>
               <div class="row">
                   <div class="col table-responsive">
-                      <table class="table table-hover table-sm">
+                      <table class="table table-hover table-sm" id="file-table">
                           <thead>
                               <tr class="table-light">
-                                  <th class="col-7">File name</th>
-                                  <th class="col-3">Size</th>
-                                  <th class="col-2">Action</th>
+                                  <th>File name</th>
+                                  <th>Size</th>
+                                  <th>Action</th>
                               </tr>
                           </thead>
                           <tbody class="table-light">
