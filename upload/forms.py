@@ -1,19 +1,3 @@
-# from django import forms
-# from .models import UploadFile
-
-# class UploadFileForm(forms.ModelForm):
-#     files = forms.FileField(widget = forms.TextInput(attrs={
-#             "multiple": "True",
-#         }), label = "")
-#     class Meta:
-#         model = UploadFile
-#         fields = ['file']
-
-# from django import forms
-
-# class UploadFileForm(forms.Form):
-#     files = forms.FileField(widget = forms.ClearableFileInput(attrs={"allow_multiple_selected": True}))
-
 from django import forms
 
 
