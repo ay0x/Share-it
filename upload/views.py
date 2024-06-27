@@ -7,7 +7,10 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            files = request.FILES.getlist('files')
+            for file in files:
+                uploaded_file = UploadFile(file=file)
+                uploaded_file.save()
             return redirect('uploaded_files')
     else:
         form = UploadFileForm()
