@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import JsonResponse
 from .forms import UploadFileForm
 from .models import UploadFile
 
@@ -11,6 +11,7 @@ def upload_file(request):
             for file in files:
                 uploaded_file = UploadFile(file=file)
                 uploaded_file.save()
+            #return JsonResponse({'message': 'File(s) uploaded successfully!'})
             return redirect('uploaded_files')
     else:
         form = UploadFileForm()
