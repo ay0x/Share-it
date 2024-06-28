@@ -4,7 +4,7 @@ from django.utils import timezone
 class UploadFile(models.Model):
     file = models.FileField(upload_to='uploads/')
     file_name = models.CharField(max_length=255)
-    file_size = models.PositiveIntegerField()
+    file_size = models.PositiveBigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateTimeField(null=True, blank=True)
     upload_by = models.CharField(max_length=255)
