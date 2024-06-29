@@ -12,9 +12,14 @@ def upload_file(request):
                 uploaded_file = UploadFile(file=file)
                 uploaded_file.save()
             #return JsonResponse({'message': 'File(s) uploaded successfully!'})
-            return redirect('uploaded_files')
+            #The progress bar is async, it stays on the webpage, I need to render the downnload link here
+            return render(request, 'pages/home.html', {
+                'show_dropbox': False,
+                'show_progress': True,
+                })
     else:
         form = UploadFileForm()
+        
     return render(request, 'upload.html', {'form': form})
 
 def uploaded_files(request):
