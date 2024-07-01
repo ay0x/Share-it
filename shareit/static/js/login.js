@@ -11,21 +11,21 @@ const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
 const loginButton = document.querySelector('#loginButton');
 
-function validateEmail(email) {
+function validateEmail (email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
 }
 
-function validateInputs() {
+function validateInputs () {
   const emailValid = validateEmail(emailInput.value.trim());
   const passwordValid = passwordInput.value.trim().length >= 8;
 
   if (emailValid && passwordValid) {
-      loginButton.disabled = false;
-      loginButton.classList.add('enabled');
+    loginButton.disabled = false;
+    loginButton.classList.add('enabled');
   } else {
-      loginButton.disabled = true;
-      loginButton.classList.remove('enabled');
+    loginButton.disabled = true;
+    loginButton.classList.remove('enabled');
   }
 }
 
