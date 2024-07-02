@@ -2,6 +2,7 @@
 
 {% block content%}
         <main class="mt-5 pt-5">
+          <div class="container-fluid" id="main-box">
             <!-- Modal HTML -->
             <div class="modal fade" id="FileLimitModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -148,5 +149,18 @@
                     <div class="col"></div>
                 </div>
             </div>
+          </div>
+            <!-- UPLOAD SUCCESSFULL DIV -->
+            <div class="container-fluid" id="uploaded" style="display: none;">
+              <div class="row">
+                  <div class="col"></div>
+                  <div class="col-7">
+                      <p class="text-start fs-4 text-dark mt-3 mb-1">Your upload is completed!</p>
+                      <!-- Individual Upload information -->
+                      <div id="upload-info-container"></div>
+                  </div>
+                  <div class="col"></div>
+              </div>
+          </div>
         </main>
 {% endblock %}

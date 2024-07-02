@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import JsonResponse
 from .forms import UploadFileForm
 from .models import UploadFile
@@ -8,20 +8,28 @@ def upload_file(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             files = request.FILES.getlist('files')
+            token_list = []
+            file_list = []
             for file in files:
                 uploaded_file = UploadFile(file=file)
                 uploaded_file.save()
-            #return JsonResponse({'message': 'File(s) uploaded successfully!'})
-            #The progress bar is async, it stays on the webpage, I need to render the downnload link here
-            return render(request, 'pages/home.html', {
-                'show_dropbox': False,
-                'show_progress': True,
+                token_list.append(uploaded_file.download_link)
+                file_list.append({
+                    'file_name': uploaded_file.file_name,
+                    'file_size': uploaded_file.file_size,
+                    'download_link': uploaded_file.download_link,
+                    'delete_link': uploaded_file.delete_link
                 })
+            return JsonResponse({
+                'show_dropbox': False,
+                'show_download_list': True,
+                'files': file_list
+            })
     else:
-        form = UploadFileForm()
+        return render(request, 'pages/home.html')
         
-    return render(request, 'upload.html', {'form': form})
+    # return render(request, 'upload.html', {'form': form})
 
-def uploaded_files(request):
-    files = UploadFile.objects.all()
-    return render(request, 'uploaded_files.html', {'files': files})
+# def uploaded_files(request):
+#     files = UploadFile.objects.all()
+#     return render(request, 'uploaded_files.html', {'files': files})
