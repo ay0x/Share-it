@@ -2,6 +2,13 @@
 
 {% block content%}
         <main class="mt-5 pt-5">
+			{% if messages %}
+			<div class="floating-message" id="floatingMessage">
+				{% for message in messages %}
+				<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+				{% endfor %}
+			</div>
+			{% endif %}		
           <div class="container-fluid" id="main-box">
             <!-- Modal HTML -->
             <div class="modal fade" id="FileLimitModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -59,7 +66,10 @@
                             </label>
                         </div>
                         <div class="col"></div>
-                        <p class="text-center mt-2 mb-0 progress-text fs-6">Upload limit is 300MB. Sign up or log in for unlimited upload</p>
+						{% if user.is_authenticated %}
+						{% else %}
+						<p class="text-center mt-2 mb-0 progress-text fs-6">Upload limit is 300MB. Sign up or log in for unlimited upload</p>
+						{% endif %}
                     </div>
                 </div>
                 <!-- SELECTED FILES -->
