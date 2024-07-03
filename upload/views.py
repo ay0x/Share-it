@@ -21,15 +21,8 @@ def upload_file(request):
                     'delete_link': uploaded_file.delete_link
                 })
             return JsonResponse({
-                'show_dropbox': False,
                 'show_download_list': True,
                 'files': file_list
             })
     else:
         return render(request, 'pages/home.html')
-        
-    # return render(request, 'upload.html', {'form': form})
-
-# def uploaded_files(request):
-#     files = UploadFile.objects.all()
-#     return render(request, 'uploaded_files.html', {'files': files})

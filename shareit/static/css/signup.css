@@ -93,7 +93,7 @@ main {
 .login-container {
   width: 100%;
   max-width: 800px;
-  padding: 20px;
+  padding: 12px;
   background-color: white;
   border-radius: 10px;
   text-align: center;
@@ -137,7 +137,7 @@ main {
   outline: none;
 }
 
-.input-group .password-toggle {
+.input-group .password-toggle, .password-toggle1 {
   position: absolute;
   right: 25px;
   top: 50%;
@@ -189,7 +189,7 @@ main {
   margin-top: 20px;
   width: 80%;
   max-width: 400px;
-  margin: 10px auto;
+  margin: -7px auto;
   padding: 10px;
   border-radius: 10px;
   text-align: left;
@@ -208,21 +208,42 @@ main {
   cursor: pointer;
 }
 
-.buttons .cancel {
-  background-color: #f0f0f0;
-  color: #6c757d;
-}
-
-.buttons .signup {
-  background-color: #28a745;
-}
-
 .captcha {
   width: 80%;
   max-width: 400px;
-  margin: 10px auto;
+  margin: -6px auto;
   padding: 10px;
   border-radius: 10px;
   text-align: left;
   position: relative;
+}
+
+.buttons .cancel {
+	background-color: #f0f0f0;
+	color: #6c757d;
+  }
+
+.buttons .cancel:hover {
+	background-color: #d1d1d1;
+	color: #6c757d;
+  }
+  
+.buttons .signup {
+	background-color: #28a745;
+  }
+
+.buttons .signup:hover {
+	background-color: #21913b;
+  }
+
+.enabled {
+	background-color: #28a745;
+	color: white;
+	cursor: pointer;
+}
+
+#loginButton:disabled {
+	background-color: #cccccc;
+	color: #666666;
+	cursor: not-allowed;
 }
