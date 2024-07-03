@@ -12,7 +12,7 @@ class UploadFile(models.Model):
     upload_by = models.CharField(default='Guest', max_length=255)
     download_link = models.CharField(max_length=7, editable=False, unique=True)
     delete_link = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    description = models.TextField(null=True, blank=True)
+    #description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.file_name
