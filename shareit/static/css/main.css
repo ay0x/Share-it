@@ -221,3 +221,26 @@ footer {
       opacity: 0;
   }
 }
+
+.p-2 {
+	padding: 0.6rem !important;
+  }
+.avatar-bg {
+	background-color: #0061E1;
+  }
+.avatar-bg:hover {
+	background-color: #0053c4;
+  }
+
+.floating-message {
+	position: fixed;
+	top: 7%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1050;
+	opacity: 1;
+	transition: opacity 0.5s ease-out;
+}
+.floating-message.fade-out {
+	opacity: 0;
+} 
