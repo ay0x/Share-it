@@ -20,6 +20,7 @@ const full_nameInput = document.querySelector('#fullname');
 const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
 const confirm_passwordInput = document.querySelector('#confirm-password');
+const primary_useSelect = document.querySelector('#primary-use');
 const loginButton = document.querySelector('#loginButton');
 
 function validateEmail(email) {
@@ -32,8 +33,9 @@ function validateInputs() {
     const emailValid = validateEmail(emailInput.value.trim());
     const passwordValid = passwordInput.value.trim().length >= 8;
     const passwordsMatch = passwordInput.value.trim() === confirm_passwordInput.value.trim();
+	const primary_useSelected = primary_useSelect.value.trim().length > 0;
 
-    if (full_nameValid && emailValid && passwordValid && passwordsMatch) {
+    if (full_nameValid && emailValid && passwordValid && passwordsMatch && primary_useSelected) {
         loginButton.disabled = false;
         loginButton.classList.add('enabled');
     } else {
@@ -46,3 +48,4 @@ full_nameInput.addEventListener('input', validateInputs);
 emailInput.addEventListener('input', validateInputs);
 passwordInput.addEventListener('input', validateInputs);
 confirm_passwordInput.addEventListener('input', validateInputs);
+primary_useSelect.addEventListener('input', validateInputs);
