@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from shareit.my_utils import generate_token
 import uuid
+from django.conf import settings
 
 class UploadFile(models.Model):
     file = models.FileField(upload_to='uploads/')
@@ -9,7 +10,7 @@ class UploadFile(models.Model):
     file_size = models.PositiveBigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateTimeField(default=timezone.now() + timezone.timedelta(hours=24))
-    upload_by = models.CharField(default='Guest', max_length=255)
+    upload_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     download_link = models.CharField(max_length=7, editable=False, unique=True)
     delete_link = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     #description = models.TextField(null=True, blank=True)
