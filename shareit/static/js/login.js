@@ -31,3 +31,15 @@ function validateInputs () {
 
 emailInput.addEventListener('input', validateInputs);
 passwordInput.addEventListener('input', validateInputs);
+
+document.addEventListener('DOMContentLoaded', (event) => {
+	const floatingMessage = document.getElementById('floatingMessage');
+	if (floatingMessage) {
+		setTimeout(() => {
+			floatingMessage.classList.add('fade-out');
+		}, 3000);
+		setTimeout(() => {
+			floatingMessage.remove();
+		}, 3500);
+	}
+});
