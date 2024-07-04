@@ -21,7 +21,7 @@ const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
 const confirm_passwordInput = document.querySelector('#confirm-password');
 const primary_useSelect = document.querySelector('#primary-use');
-const loginButton = document.querySelector('#loginButton');
+const signupButton = document.querySelector('#signupButton');
 
 function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,11 +36,11 @@ function validateInputs() {
 	const primary_useSelected = primary_useSelect.value.trim().length > 0;
 
     if (full_nameValid && emailValid && passwordValid && passwordsMatch && primary_useSelected) {
-        loginButton.disabled = false;
-        loginButton.classList.add('enabled');
+        signupButton.disabled = false;
+        signupButton.classList.add('enabled');
     } else {
-        loginButton.disabled = true;
-        loginButton.classList.remove('enabled');
+        signupButton.disabled = true;
+        signupButton.classList.remove('enabled');
     }
 }
 
@@ -49,3 +49,15 @@ emailInput.addEventListener('input', validateInputs);
 passwordInput.addEventListener('input', validateInputs);
 confirm_passwordInput.addEventListener('input', validateInputs);
 primary_useSelect.addEventListener('input', validateInputs);
+
+document.addEventListener('DOMContentLoaded', (event) => {
+	const floatingMessage = document.getElementById('floatingMessage');
+	if (floatingMessage) {
+		setTimeout(() => {
+			floatingMessage.classList.add('fade-out');
+		}, 3000);
+		setTimeout(() => {
+			floatingMessage.remove();
+		}, 3500);
+	}
+});
