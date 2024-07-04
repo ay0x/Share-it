@@ -54,6 +54,10 @@
             </div>
             <!-- DROPBOX DIV -->
             <form id="upload-form" enctype="multipart/form-data">
+				{% if user.is_authenticated %}
+				<input type="hidden" value="{{ user.user_unique_gen_id}}" name="uploader">
+				{% else %}
+				{% endif %}
                 {% csrf_token %}
                 <div class="container-fluid mt-5 mb-5" id="dropbox">
                     <div class="row d-flex justify-content-center">
