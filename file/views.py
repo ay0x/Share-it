@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+def file(request):
+    return render(request, 'file/download.html')
+
+def delete(request):
+    return render(request, 'file/delete.html')
