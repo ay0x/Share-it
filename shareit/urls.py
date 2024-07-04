@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('upload.urls')),
     path('', include('login.urls')),
     path('', include('signup.urls')),
-    path('', include('account.urls'))
+    path('', include('account.urls')),
+    path('', include('file.urls'))
 ]
