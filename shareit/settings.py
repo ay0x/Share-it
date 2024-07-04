@@ -74,6 +74,11 @@ TEMPLATES = [
     },
 ]
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATES[0]['OPTIONS']['libraries'] = {
+    'custom_tags': 'templatetags.custom_tags',
+}
+
 WSGI_APPLICATION = 'shareit.wsgi.application'
 
 
@@ -146,3 +151,6 @@ FILE_UPLOAD_HANDLERS = [
 
 
 AUTH_USER_MODEL = 'signup.User'
+
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
