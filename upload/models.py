@@ -5,7 +5,7 @@ import uuid
 from django.conf import settings
 
 class UploadFile(models.Model):
-    file = models.FileField(upload_to='uploads/')
+    file = models.FileField(upload_to='')
     file_name = models.CharField(max_length=255)
     file_size = models.PositiveBigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
