@@ -122,7 +122,6 @@ main {
 .login-container button {
   width: 100%;
   padding: 15px;
-  background-color: #d3d3d3;
   border: none;
   border-radius: 25px;
   font-size: 16px;
@@ -141,4 +140,35 @@ main {
 
 .login-container .forgot-password:hover {
   text-decoration: underline;
+}
+
+.enabled {
+	background-color: #28a745;
+	color: white;
+	cursor: pointer;
+}
+
+.enabled:hover {
+	background-color: #21913b;
+	color: white;
+	cursor: pointer;
+}
+
+#loginButton:disabled {
+	background-color: #cccccc;
+	color: #666666;
+	cursor: not-allowed;
+}
+
+.floating-message {
+	position: fixed;
+	top: 20%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1050;
+	opacity: 1;
+	transition: opacity 0.5s ease-out;
+}
+.floating-message.fade-out {
+	opacity: 0;
 }
