@@ -4,9 +4,9 @@
 <header class="header fixed-top bg-light">
   <nav class="navbar navbar-expand">
       <div class="container-fluid">
-          <div href="{% url 'upload_file' %}" class="navbar-brand mx-3">
+          <a href="{% url 'upload_file' %}" ><div class="navbar-brand mx-3">
               <img src="{% static 'images/logo.png' %}" height="60" width="60" alt="ShareIt Logo">
-          </div>
+          </div></a>
 		{% if user.is_authenticated %}
 		  <ul class="navbar-nav">
             <li class="nav-item me-4">
