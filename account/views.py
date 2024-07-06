@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.contrib import messages
 from .forms import ProfileForm
+from upload.models import DeletedFile
 
 @login_required(login_url='/login/')
 def dashboard(request):
@@ -28,6 +29,7 @@ def history(request):
         return redirect('upload_file')
         
     user_files = request.user.uploadfile_set.all()
+    deleted_files = DeletedFile.objects.filter(upload_by=request.user)
     return render(request, 'account/history.html', {'user_files': user_files})
 
 
