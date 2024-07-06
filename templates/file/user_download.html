@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+{% load custom_tags %}
+<main class="mt-5 pt-5">
+    <!-- UPLOAD SUCCESSFULL DIV -->
+    <div class="container-fluid" id="uploaded">
+		{% if messages %}
+		<div class="floating-message" id="floatingMessage">
+			{% for message in messages %}
+			<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-7">
+                <p class="text-start fs-4 text-dark mt-3 mb-1">Download</p>
+                <!-- Individual Upload information -->
+                <div class="container-fluid bg-light p-3">
+					<div class="container-fluid">
+						<p>{{ file_name }} ({% size_unit file_size %})</p>
+						<p class="mb-0">Download page link</p>
+						<div class="container-fluid p-0">
+							<div class="copy-container">
+								<span class="url-text" id="downloadUrl">
+									<a href="http://{% get_host %}file/{{ download_link }}">{% get_host %}/file/{{ download_link }}</a>
+								</span>
+								<button class="copy-button" onclick="copyToClipboard('downloadUrl', this)">Copy</button>
+							</div>
+						</div>
+						<p class="mb-0 mt-3">Delete file link</p>
+						<div class="container-fluid p-0">
+							<div class="copy-container">
+								<span class="url-text" id="deleteUrl">
+									<a href="http://{% get_host %}delete/{{ delete_link }}">{% get_host %}/delete/{{ delete_link }}</a>
+								</span>
+								<button class="copy-button" onclick="copyToClipboard('deleteUrl', this)">Copy</button>
+							</div>
+						</div>
+						<p class="mt-1" style="font-size: 12px;">Share this link to allow the downloader to delete the file. A confirmation will be shown.</p>
+					</div>
+				</div>
+				<div>&nbsp;</div>
+                <!-- Ends here -->
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+</main>
+{% endblock %}
