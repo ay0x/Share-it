@@ -2,6 +2,13 @@
 {% block content %}
 {% load custom_tags %}
 <main class="mt-5 pt-5">
+	{% if messages %}
+	<div class="floating-message" id="floatingMessage">
+		{% for message in messages %}
+		<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+		{% endfor %}
+	</div>
+	{% endif %}
     <!-- UPLOAD SUCCESSFULL DIV -->
     <div class="container-fluid" id="uploaded">
         <div class="row">
