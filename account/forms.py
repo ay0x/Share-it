@@ -6,9 +6,4 @@ User = get_user_model()
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['full_name', 'email', 'primary_use']
-        widgets = {
-            'full_name': forms.TextInput(),
-            'email': forms.EmailInput(),
-            'primary_use': forms.Select(),
-        }
+        fields = ['full_name']
