@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content%}
+{% load custom_tags %}
+<main class="mt-5 pt-5">
+	<!-- The first DIV (Header information starts here) -->
+	<div class="container-fluid" id="headerInfo">
+		<div class="row">
+			<div class="col">
+				<p class="text-center fs-2 text-dark mt-3 mb-0">History</p>
+			</div>
+		</div>
+	</div>
+	<!-- HISTORY FILES -->
+	<div class="container-fluid" id="historyTable">
+		<div class="row d-flex justify-content-center">
+			<div class="col-8">
+				<div class="row">
+					<div class="col table-responsive">
+						<table class="table table-hover table-sm">
+							<thead>
+								<tr class="table-light">
+									<th col-2>Date</th>
+									<th col-1>Time</th>
+									<th col-7>File Name</th>
+									<th col-1>Size</th>
+									<th col-1>Status</th>
+								</tr>
+							</thead>
+							{% for file in user_files %}
+							<tbody class="table-light">
+								<tr>
+									<td>{{ file.upload_date|date:"M j, Y" }}</td>
+									<td>{{ file.upload_date|time:"g:i A" }}</td>
+									<td>
+										<a href="{% get_full_url %}file/user/dl/{{ file.download_link }}" target="_blank">{{ file.file_name }}</a>
+									</td>
+									<td>{% size_unit file.file_size %}</td>
+									<td class="text-success">Expired</td>
+								</tr>
+							</tbody>
+							{% endfor %}
+						</table>
+					</div>
+				</div>
+				{% if not user_files%}
+				<!-- NO FILES -->
+				<div class="row" id="no-history">
+					<p class="fs-3 d-flex justify-content-center">No uploaded file.</p>
+				</div>
+				<!-- -->
+				{% endif %}
+				<form action="{% url 'history' %}" method="POST">
+					{% csrf_token %} 
+				<div class="row d-flex justify-content-center">
+					<button class="custom-upload-button mt-2" type="submit">Upload</button>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+	</div>
+</main>
+{% endblock %}
