@@ -21,7 +21,6 @@ def upload_file(request):
             for file in files:
                 uploaded_file = UploadFile(file=file, upload_by=user if user else None)
                 uploaded_file.save()
-                print("After save")
                 token_list.append(uploaded_file.download_link)
                 file_list.append({
                     'file_name': uploaded_file.file_name,
