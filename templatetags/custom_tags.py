@@ -27,3 +27,14 @@ def size_unit(value):
         return f"{value / 1024**3:.2f} GB"
     else:
         return f"{value / 1024**4:.2f} TB"
+
+
+@register.simple_tag(takes_context=True)
+def get_host(context):
+    request = context['request']
+    return request.get_host()
+
+@register.simple_tag(takes_context=True)
+def get_full_url(context):
+    request = context['request']
+    return request.build_absolute_uri('/')
