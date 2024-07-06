@@ -29,9 +29,19 @@ class UploadFile(models.Model):
         self.download_link = generate_token()
         super().save(*args, **kwargs)
 
+
 class DeletedFile(models.Model):
     file_name = models.CharField(max_length=255)
     file_size = models.PositiveBigIntegerField()
     upload_date = models.DateTimeField()
     deletion_date = models.DateTimeField(default=timezone.now)
+    upload_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True)
+
+
+class ExpiredFile(models.Model):
+    file_name = models.CharField(max_length=255)
+    file_size = models.PositiveBigIntegerField()
+    upload_date = models.DateTimeField()
+    expiration_date = models.DateTimeField()
+    expired_on = models.DateTimeField(default=timezone.now)
     upload_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True)
