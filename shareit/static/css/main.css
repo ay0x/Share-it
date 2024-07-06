@@ -255,3 +255,23 @@ footer {
 a {
 	text-decoration: none;
 }
+
+.cancel-button {
+	background-color: #C9CDC8;
+	color: white;
+  }
+  
+  .canel-button:hover {
+  background-color: #aeb2ae;
+  color: white;
+  }
+  
+  .delete-button {
+	background-color: #dc3545;
+	color: white;
+  }
+  
+  .delete-button:hover {
+  background-color: #bf2d3b;
+  color: white;
+  }
