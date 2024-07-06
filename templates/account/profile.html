@@ -1,0 +1,87 @@
+{% load static %}
+{% load custom_tags %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="{% static 'js/profile.js' %}" defer></script>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+		<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+		<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <title>ShareIt</title>
+    </head>
+    <body class="main-body d-flex flex-column min-vh-100">
+        <!-- Header -->
+        {% include "partials/_header.html" %}
+<main class="mt-0 pt-0">
+	{% if messages %}
+	<div class="floating-message" id="floatingMessage">
+		{% for message in messages %}
+		<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+	<!-- The first DIV (Header information starts here) -->
+	<div class="container-fluid" id="headerInfo">
+		<div class="row">
+			<div class="col">
+				<p class="text-center fs-2 text-dark mt-3 mb-0">Manage Profile</p>
+			</div>
+		</div>
+	</div>
+	<!-- PROFILE MANAGEMENT -->
+	<div class="login-container">
+		<form method="POST" novalidate>
+			{% csrf_token %} 
+			<div class="input-group">
+			<label for="fullname">First & Last Name</label>
+			<input type="text" id="fullname" name="full_name" value="{{ user.full_name }}" placeholder="Enter your first and last name">
+		</div>
+		<div class="input-group">
+			<label for="password">Password</label>
+			<input type="password" id="password" name="password" placeholder="Enter your password">
+			<span class="password-toggle">
+				<i class="bi bi-eye-slash" id="eye"></i>
+			</span>
+		</div>
+		<div class="input-group">
+			<label for="password">ConfirmPassword</label>
+			<input type="password" id="confirm-password" name="confirm_password" placeholder="Enter your password">
+			<span class="password-toggle1">
+				<i class="bi bi-eye-slash" id="eye1"></i>
+			</span>
+		</div>
+		<div class="buttons">
+			<button id="cancel" class="cancel" type="button">Cancel</button>
+			<button class="update" id="updateButton" disabled>Update</button>
+		</div>
+		</form>
+	</div>
+</main>
+ <!-- Footer -->
+ {% include "partials/_footer.html" %} 
+ <script>
+ document.addEventListener('DOMContentLoaded', (event) => {
+	 const floatingMessage = document.getElementById('floatingMessage');
+	 if (floatingMessage) {
+		 setTimeout(() => {
+			 floatingMessage.classList.add('fade-out');
+		 }, 3000);
+		 setTimeout(() => {
+			 floatingMessage.remove();
+		 }, 3500);
+	 }
+ });
+ </script>
+ 
+</body>
+</html>
