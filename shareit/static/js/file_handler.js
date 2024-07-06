@@ -37,7 +37,7 @@ function handleDrop (e) {
 
 function handleFiles (files) {
   for (let i = 0; i < files.length; i++) {
-    if (files[i].size < 0) { // 300000000
+    if (files[i].size > 300000000) {
       showFileLimitModal();
       continue;
     }
