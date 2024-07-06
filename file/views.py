@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from upload.models import UploadFile
+from django.shortcuts import render, get_object_or_404, redirect
+from upload.models import UploadFile, DeletedFile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -38,5 +38,25 @@ def user_dl(request, file_token):
         return render(request, 'file/user_download.html', context)
 
 
-def delete(request):
-    return render(request, 'file/delete.html')
+def delete(request, file_token):
+    file = get_object_or_404(UploadFile, delete_link=file_token)
+
+    if request.method == 'POST':
+        # Save file information to DeletedFile model
+        DeletedFile.objects.create(
+            file_name=file.file_name,
+            file_size=file.file_size,
+            upload_date=file.upload_date,
+            upload_by=file.upload_by
+        )
+        file.delete()
+        messages.success(request, 'File deleted successfully.')
+        return redirect('upload_file')
+
+    context = {
+        'file_name': file.file_name,
+        'file_size': file.file_size,
+        'delete_link': file.delete_link
+    }
+    
+    return render(request, 'file/delete.html', context)
