@@ -19,7 +19,7 @@ def user_login(request):
                 return redirect('dashboard')
             else:
                 messages.error(request, 'Invalid email or password.')
-                return redirect('login')
+                return render(request, 'pages/login.html', {'post_data': request.POST})
     else:
         form = LoginForm()
     
