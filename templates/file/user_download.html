@@ -18,12 +18,12 @@
                 <!-- Individual Upload information -->
                 <div class="container-fluid bg-light p-3">
 					<div class="container-fluid">
-						<p>{{ file_name }} ({% size_unit file_size %})</p>
+						<p>{{ file_name|escape }} ({% size_unit file_size %})</p>
 						<p class="mb-0">Download page link</p>
 						<div class="container-fluid p-0">
 							<div class="copy-container">
 								<span class="url-text" id="downloadUrl">
-									<a href="http://{% get_host %}file/{{ download_link }}">{% get_host %}/file/{{ download_link }}</a>
+									<a href="http://{% get_host %}/file/{{ download_link|escape }}">http://{% get_host %}/file/{{ download_link|escape }}</a>
 								</span>
 								<button class="copy-button" onclick="copyToClipboard('downloadUrl', this)">Copy</button>
 							</div>
@@ -32,7 +32,7 @@
 						<div class="container-fluid p-0">
 							<div class="copy-container">
 								<span class="url-text" id="deleteUrl">
-									<a href="http://{% get_host %}delete/{{ delete_link }}">{% get_host %}/delete/{{ delete_link }}</a>
+									<a href="http://{% get_host %}/file/delete/{{ delete_link|escape }}">http://{% get_host %}/file/delete/{{ delete_link|escape }}</a>
 								</span>
 								<button class="copy-button" onclick="copyToClipboard('deleteUrl', this)">Copy</button>
 							</div>

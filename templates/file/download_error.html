@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+{% load custom_tags %}
+<main class="mt-5 pt-5">
+    <div class="container-fluid" id="uploaded">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-7">
+                <p class="text-start fs-4 text-dark mt-3 mb-1">Download Error</p>
+               <div class="container-fluid bg-light p-3">
+					<div class="container-fluid">
+						<div class="container border-bottom border-2 p-0 mt-1 mb-2">
+							<p class="mb-2 fs-5"><b>Possible reasons include:</b></p>
+						</div>
+						
+						<ul>
+							<li>File date limit has expired.</li>
+							<li>File was not successfully uploaded.</li>
+						</ul>
+						
+						<p class="mb-0 mt-2"><p class="fw-bolder">It is not possible to restore the file.</p> Please contact the uploader and ask them to upload the file again.</p>
+						
+						<div class="container-fluid p-0">
+							<div class="container mt-5 d-flex justify-content-center">
+								<button id="goHome" class="btn rounded-pill btn-custom btn-lg btn-custom-width" style="width: 300px;">Go home</button>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+</main>
+{% endblock %}
