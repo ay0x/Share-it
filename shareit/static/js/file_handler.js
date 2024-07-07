@@ -116,3 +116,11 @@ dropbox.addEventListener('drop', handleDrop, false);
 document.getElementById('customFileInput').addEventListener('change', function () {
   handleFiles(this.files);
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+	const goHomeButton = document.getElementById("goHome");
+
+	goHomeButton.addEventListener("click", function() {
+		window.location.href = '/';
+	});
+});

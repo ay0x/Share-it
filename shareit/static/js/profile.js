@@ -59,4 +59,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			floatingMessage.remove();
 		}, 3500);
 	}
+
+	const cancelButton = document.getElementById("cancelButton");
+	cancelButton.addEventListener("click", function() {
+		window.location.href = '/';
+		});
 });
