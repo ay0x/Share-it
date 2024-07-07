@@ -26,23 +26,29 @@
 									<th col-1>Status</th>
 								</tr>
 							</thead>
-							{% for file in user_files %}
+							{% for item in files_with_status %}
 							<tbody class="table-light">
 								<tr>
-									<td>{{ file.upload_date|date:"M j, Y" }}</td>
-									<td>{{ file.upload_date|time:"g:i A" }}</td>
+									<td>{{ item.file.upload_date|date:"M j, Y" }}</td>
+									<td>{{ item.file.upload_date|time:"g:i A" }}</td>
 									<td>
-										<a href="{% get_full_url %}file/user/dl/{{ file.download_link }}" target="_blank">{{ file.file_name }}</a>
+										<a href="{% get_full_url %}file/user/dl/{{ item.file.download_link|escape }}" target="_blank">{{ item.file.file_name|escape }}</a>
 									</td>
-									<td>{% size_unit file.file_size %}</td>
-									<td class="text-success">Expired</td>
+									<td>{% size_unit item.file.file_size %}</td>
+									{% if item.status == 'Deleted'%}
+									<td class="text-danger">{{ item.status|escape }}</td>
+									{% elif item.status == 'Expired' %}
+									<td class="text-secondary">{{ item.status|escape }}</td>	
+									{% else %}
+									<td class="text-success">{{ item.status|escape }}</td>
+									{% endif %}
 								</tr>
 							</tbody>
 							{% endfor %}
 						</table>
 					</div>
 				</div>
-				{% if not user_files%}
+				{% if not files_with_status%}
 				<!-- NO FILES -->
 				<div class="row" id="no-history">
 					<p class="fs-3 d-flex justify-content-center">No uploaded file.</p>

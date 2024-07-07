@@ -44,7 +44,7 @@
 			{% csrf_token %} 
 			<div class="input-group">
 			<label for="fullname">First & Last Name</label>
-			<input type="text" id="fullname" name="full_name" value="{{ user.full_name }}" placeholder="Enter your first and last name">
+			<input type="text" id="fullname" name="full_name" value="{{ user.full_name|escape }}" placeholder="Enter your first and last name">
 		</div>
 		<div class="input-group">
 			<label for="password">Password</label>
@@ -61,7 +61,7 @@
 			</span>
 		</div>
 		<div class="buttons">
-			<button id="cancel" class="cancel" type="button">Cancel</button>
+			<button id="cancelButton" class="cancel" type="button">Cancel</button>
 			<button class="update" id="updateButton" disabled>Update</button>
 		</div>
 		</form>
