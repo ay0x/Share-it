@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'signup.apps.SignupConfig',
     'account.apps.AccountConfig',
     'file.apps.FileConfig',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -120,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Harare'
 
 USE_I18N = True
 
@@ -162,4 +163,11 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
+CELERY_TIMEZONE = 'Africa/Harare'
+
+CELERY_BEAT_SCHEDULE = {
+    'check-and-expire-files-every-minute': {
+        'task': 'upload.tasks.check_expiry',
+        'schedule': 60.0,  # Run every 60 seconds
+    },
+}
