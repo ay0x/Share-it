@@ -33,7 +33,7 @@ class UploadFile(models.Model):
     file_size = models.PositiveBigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateTimeField(default=timezone.now()
-                                           + timezone.timedelta(hours=24))
+                                           + timezone.timedelta(minutes=3))
     upload_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                   null=True, blank=True,
                                   on_delete=models.DO_NOTHING)
@@ -64,8 +64,8 @@ class UploadFile(models.Model):
         if not self.file_size:
             self.file_size = self.file.size
         if self.upload_by is None:
-            self.upload_by = 'Guest'
-        self.expiration_date = timezone.now() + timezone.timedelta(hours=24)
+            self.upload_by = None
+        self.expiration_date = timezone.now() + timezone.timedelta(minutes=3)
         self.download_link = generate_token()
         super().save(*args, **kwargs)
 
