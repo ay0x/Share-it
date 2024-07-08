@@ -16,6 +16,7 @@
 ### Backend
 - **Python**: The main programming language for backend development.
   - **Django**: The web framework used to build the application.
+  - **Celery**: The Distributed Task Queue.
 
 
 ## Database
@@ -82,7 +83,13 @@ python manage.py createsuperuser
 ```
 
 
-6. **Run the development server**:
+6. **Run Celery Work and Beat**
+```
+celery -A shareit worker --loglevel=info
+celery -A shareit beat --loglevel=info
+```
+
+7. **Run the development server**:
 ```
 python manage.py runserver
 ```
