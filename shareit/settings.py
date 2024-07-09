@@ -171,3 +171,8 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60.0,  # Run every 60 seconds
     },
 }
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
