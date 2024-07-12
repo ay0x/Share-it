@@ -35,6 +35,14 @@ def signup(request):
             return render(request,
                           'pages/signup.html', {'post_data': request.POST})
 
+        full_name = request.POST.get('full_name')
+        name_parts = full_name.split()
+        if len(name_parts) != 2:
+            messages.error(request,
+                           'Enter your first and last name')
+            return render(request,
+                          'pages/signup.html', {'post_data': request.POST})
+
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
