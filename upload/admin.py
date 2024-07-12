@@ -14,7 +14,7 @@ Imports:
 """
 
 from django.contrib import admin
-from .models import UploadFile
+from .models import UploadFile, DeletedFile, ExpiredFile
 from django.utils import timezone
 
 class UploadFileAdmin(admin.ModelAdmin):
@@ -27,5 +27,12 @@ class UploadFileAdmin(admin.ModelAdmin):
         return obj.expiration_date and obj.expiration_date < timezone.now()
     is_expired.boolean = True 
     is_expired.short_description = 'Expired'
-
 admin.site.register(UploadFile, UploadFileAdmin)
+
+class DeletedFileAdmin(admin.ModelAdmin):
+   list_display = ('file_name', 'file_size', 'upload_date', 'upload_by') 
+admin.site.register(DeletedFile, DeletedFileAdmin)
+
+class ExpiredFileAdmin(admin.ModelAdmin):
+   list_display = ('file_name', 'file_size', 'upload_date', 'upload_by') 
+admin.site.register(ExpiredFile, ExpiredFileAdmin)
